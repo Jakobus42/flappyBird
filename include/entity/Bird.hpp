@@ -9,12 +9,14 @@ namespace entity {
  */
 class Bird: public AEntity {
     public:
-        Bird();
+        Bird(std::size_t x, std::size_t y);
         ~Bird();
         Bird(const Bird &other);
         Bird& operator=(const Bird &other);
 
         bool move();
+        void draw(sf::RenderWindow& window);
+
 };
 
 } /* namespace entity */

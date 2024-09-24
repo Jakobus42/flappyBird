@@ -5,9 +5,7 @@ namespace entity {
 /**
  * @brief Constructs a new AEntity object.
  */
-AEntity::AEntity(const sf::Texture& texture, const sf::Sprite& sprite): 
-_texture(texture),
-_sprite(sprite) {}
+AEntity::AEntity(){}
 
 /**
  * @brief Destroys the AEntity object.
@@ -29,18 +27,27 @@ AEntity::AEntity(const AEntity& other) {
  */
 AEntity& AEntity::operator=(const AEntity& other) {
     if (this != &other) {
-        _texture = other._texture;
+        _textures = other._textures;
         _sprite = other._sprite;
     }
     return *this;
 }
 
-const sf::Texture& AEntity::getTexture() const {
-    return _texture;
+const std::vector<sf::Texture>& AEntity::getTexture() const {
+    return _textures;
 }
 
 const sf::Sprite& AEntity::getSprite() const {
     return _sprite;
+}
+
+void AEntity::setTextures(std::vector<std::string>& texturePaths) {
+    for (std::vector<std::string>::iterator it = texturePaths.begin(); it != texturePaths.end(); ++it) {
+        sf::Texture texture;
+        if(!texture.loadFromFile(*it));
+            throw std::runtime_error("cant load " + *it );
+        _textures.push_back(texture);
+    }
 }
 
 } /* namespace entity */

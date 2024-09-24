@@ -5,8 +5,14 @@ namespace entity {
 /**
  * @brief Constructs a new Bird object.
  */
-Bird::Bird(): 
-AEntity(sf::Texture(), sf::Sprite(_texture)) {
+Bird::Bird(std::size_t x, std::size_t y): 
+AEntity() {
+    std::vector<std::string> texturePaths = {
+        "assets/sprites/yellowbird-upflap.png",
+    };
+    setTextures(texturePaths);
+    _sprite.setScale(4, 4);
+    _sprite.setPosition(x, y);
 }
 
 /**
@@ -28,14 +34,19 @@ AEntity(other) {}
  */
 Bird& Bird::operator=(const Bird& other) {
     if (this != &other) {
-        _texture = other._texture;
+        _textures = other._textures;
         _sprite = other._sprite;
     }
     return *this;
 }
 
 bool Bird::move() {
+    _sprite.move(0, -100);
     return true;
+}
+
+void Bird::draw(sf::RenderWindow& window) {
+    window.draw(_sprite);
 }
 
 } /* namespace entity */

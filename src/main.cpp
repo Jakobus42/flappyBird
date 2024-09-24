@@ -2,43 +2,27 @@
 #include "../include/entity/Bird.hpp"
 #include <iostream>
 
-void moveBird(sf::Sprite& bird, sf::Keyboard::Key key) {
-  if (key == sf::Keyboard::W) {
-      bird.move(0, -100);
-  }
-}
-
 int main() {
   auto window = sf::RenderWindow{{1920u, 1080u}, "Flappy Bird"};
-  sf::Texture birdTexture;
+  sf::Texture bgTexture;
+  entity::Bird bird(window.getSize().x / 2, window.getSize().y / 2);
 
   window.setFramerateLimit(60);
-  sf::Texture bgTexture;
-
-  if (!birdTexture.loadFromFile("assets/sprites/yellowbird-upflap.png"))
-      return EXIT_FAILURE;
-
-  
-
   if (!bgTexture.loadFromFile("assets/sprites/background-day-wide.png"))
       return EXIT_FAILURE;
-
   sf::Sprite background(bgTexture);
-  sf::Sprite bird(birdTexture);
 
-  bird.setScale(4, 4);
-  bird.setPosition(window.getSize().x / 2, window.getSize().y / 2);
-  
   while (window.isOpen()) {
     for (auto event = sf::Event{}; window.pollEvent(event);) {
       if (((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) || event.type == sf::Event::Closed) {
           window.close();
       }
-      moveBird(bird, event.key.code);
+      if (event.key.code == sf::Keyboard::W) {
+          bird.move();
+      }
     }
-    bird.move(0, 2);
+    bird.draw(window);
     window.draw(background);
-    window.draw(bird);
     window.display();
     window.clear();
   }
