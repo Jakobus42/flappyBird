@@ -22,7 +22,6 @@ class AEntity {
 
         virtual bool move(std::size_t currentFrame) = 0;
         virtual void draw(sf::RenderWindow& window, std::size_t currentFrame) = 0;
-
     protected:
         std::vector<sf::Texture> _textures;
         sf::Sprite _sprite;

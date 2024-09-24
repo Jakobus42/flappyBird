@@ -5,7 +5,7 @@
 
 int main() {
   try {
-  auto window = sf::RenderWindow{{1920u, 1080u}, "Flappy Bird"};
+  auto window = sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"};
   entity::Bird bird(window.getSize().x / 4, window.getSize().y / 2);
   std::size_t currentFrame = 0;
 
@@ -22,7 +22,7 @@ int main() {
       if (((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) || event.type == sf::Event::Closed) {
           window.close();
       }
-      if (event.key.code == sf::Keyboard::W) {
+      if (event.key.code == sf::Keyboard::Space) {
           bird.jump(currentFrame);
       }
     }
@@ -34,7 +34,7 @@ int main() {
     currentFrame++;
   } 
   } catch (std::exception& e) {
-    std::cerr << "Error" << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
     return EXIT_FAILURE;
   }
 }
