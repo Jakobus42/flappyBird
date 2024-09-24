@@ -6,7 +6,9 @@ namespace entity {
  * @brief Constructs a new Bird object.
  */
 Bird::Bird(std::size_t x, std::size_t y): 
-AEntity() {
+AEntity(),
+_currentTexture(0),
+_velocity(0) {
     std::vector<std::string> texturePaths = {
         "assets/sprites/yellowbird-upflap.png",
         "assets/sprites/yellowbird-midflap.png",
@@ -14,7 +16,7 @@ AEntity() {
     };
     setTextures(texturePaths);
     _sprite.setScale(4, 4);
-    _sprite.setPosition(x, y);
+    _sprite.setPosition(x, y - (_textures[_currentTexture].getSize().y * _sprite.getScale().y) / 2);
 }
 
 /**
@@ -42,22 +44,26 @@ Bird& Bird::operator=(const Bird& other) {
     return *this;
 }
 
-bool Bird::move() {
-    _sprite.move(0, -100);
+bool Bird::jump(std::size_t currentFrame) {
+    _velocity = -13.5f;
+    _sprite.move(0, _velocity);
+    return true;
+}
+
+bool Bird::move(std::size_t) {
+    _velocity += 0.65f;
+    _sprite.move(0, _velocity);
     return true;
 }
 
 void Bird::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    static uint16_t currentTexture = 0;
-
-    if (currentTexture >= _textures.size()) {
-        currentTexture = 0;
-    }
-    std::cout << currentTexture << std::endl;
-    _sprite.setTexture(_textures[currentTexture]);
+    _sprite.setTexture(_textures[_currentTexture]);
     window.draw(_sprite);
     if (currentFrame % 3 == 1){
-        currentTexture++;
+        _currentTexture++;
+        if (_currentTexture >= _textures.size()) {
+            _currentTexture = 0;
+        }
         return ;
     }
 }
