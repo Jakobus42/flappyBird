@@ -17,14 +17,11 @@ int main() {
   if (!birdTexture.loadFromFile("assets/sprites/yellowbird-upflap.png"))
       return EXIT_FAILURE;
 
-  if (!birdTexture.loadFromFile("assets/sprites/background-day-wide.png"))
+  if (!bgTexture.loadFromFile("assets/sprites/background-day-wide.png"))
       return EXIT_FAILURE;
 
   sf::Sprite background(bgTexture);
   sf::Sprite bird(birdTexture);
- 
-  background.setScale(1, 1);
-  background.setPosition(0, 0);
 
   bird.setScale(4, 4);
   bird.setPosition(window.getSize().x / 2, window.getSize().y / 2);
@@ -36,7 +33,7 @@ int main() {
       }
       moveBird(bird, event.key.code);
     }
-    //bird.move(0, 2);
+    bird.move(0, 2);
     window.draw(background);
     window.draw(bird);
     window.display();
