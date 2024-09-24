@@ -1,10 +1,19 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 void moveBird(sf::Sprite& bird, sf::Keyboard::Key key) {
   switch (key) {
     case sf::Keyboard::W: {
       bird.move(0, -100);
     }
+    case sf::Keyboard::A: {
+      bird.move(-10, 0);
+      std::cout << "huhu" << std::endl;
+    }
+    case sf::Keyboard::D: {
+      bird.move(10, 0);
+    }
+    
     default: return ;
   }
 }
