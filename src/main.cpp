@@ -24,7 +24,7 @@ int main() {
   sf::Sprite bird(birdTexture);
 
   bird.setScale(4, 4);
-  bird.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+  bird.setPosition((window.getSize().x / 2) - ((birdTexture.getSize().x * bird.getScale().x) / 2), (window.getSize().y / 2)  - ((birdTexture.getSize().y * bird.getScale().y) / 2));
   
   while (window.isOpen()) {
     for (auto event = sf::Event{}; window.pollEvent(event);) {
