@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include "../game/GameManager.hpp"
 
 namespace entity {
 
@@ -19,7 +21,7 @@ class AEntity {
         const sf::Sprite& getSprite() const;
 
         virtual bool move() = 0;
-        virtual void draw(sf::RenderWindow& window) = 0;
+        virtual void draw(sf::RenderWindow& window, std::size_t currentFrame) = 0;
 
     protected:
         std::vector<sf::Texture> _textures;

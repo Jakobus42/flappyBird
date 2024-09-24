@@ -9,6 +9,8 @@ Bird::Bird(std::size_t x, std::size_t y):
 AEntity() {
     std::vector<std::string> texturePaths = {
         "assets/sprites/yellowbird-upflap.png",
+        "assets/sprites/yellowbird-midflap.png",
+        "assets/sprites/yellowbird-downflap.png",
     };
     setTextures(texturePaths);
     _sprite.setScale(4, 4);
@@ -45,8 +47,19 @@ bool Bird::move() {
     return true;
 }
 
-void Bird::draw(sf::RenderWindow& window) {
+void Bird::draw(sf::RenderWindow& window, std::size_t currentFrame) {
+    static uint16_t currentTexture = 0;
+
+    if (currentTexture >= _textures.size()) {
+        currentTexture = 0;
+    }
+    std::cout << currentTexture << std::endl;
+    _sprite.setTexture(_textures[currentTexture]);
     window.draw(_sprite);
+    if (currentFrame % 3 == 1){
+        currentTexture++;
+        return ;
+    }
 }
 
 } /* namespace entity */

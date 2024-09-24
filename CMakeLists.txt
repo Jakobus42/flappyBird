@@ -14,7 +14,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(flappyBird src/main.cpp)
+add_executable(flappyBird src/main.cpp src/entity/Bird.cpp src/entity/AEntity.cpp)
 target_link_libraries(flappyBird PRIVATE sfml-graphics)
 target_compile_features(flappyBird PRIVATE cxx_std_17)
 

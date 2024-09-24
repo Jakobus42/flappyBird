@@ -42,10 +42,11 @@ const sf::Sprite& AEntity::getSprite() const {
 }
 
 void AEntity::setTextures(std::vector<std::string>& texturePaths) {
-    for (std::vector<std::string>::iterator it = texturePaths.begin(); it != texturePaths.end(); ++it) {
+    for (auto it = texturePaths.begin(); it != texturePaths.end(); ++it) {
         sf::Texture texture;
-        if(!texture.loadFromFile(*it));
-            throw std::runtime_error("cant load " + *it );
+        if(!texture.loadFromFile(*it)) {
+            throw std::runtime_error("cant load " + *it);
+        }
         _textures.push_back(texture);
     }
 }

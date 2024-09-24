@@ -1,11 +1,14 @@
 #include <SFML/Graphics.hpp>
-#include "../include/entity/Bird.hpp"
 #include <iostream>
+#include "../include/entity/Bird.hpp"
+#include "../include/game/GameManager.hpp"
 
 int main() {
+  try {
   auto window = sf::RenderWindow{{1920u, 1080u}, "Flappy Bird"};
   sf::Texture bgTexture;
   entity::Bird bird(window.getSize().x / 2, window.getSize().y / 2);
+  std::size_t currentFrame = 0;
 
   window.setFramerateLimit(60);
   if (!bgTexture.loadFromFile("assets/sprites/background-day-wide.png"))
@@ -21,9 +24,14 @@ int main() {
           bird.move();
       }
     }
-    bird.draw(window);
     window.draw(background);
+    bird.draw(window, currentFrame);
     window.display();
     window.clear();
+    currentFrame++;
+  } 
+  } catch (std::exception& e) {
+    std::cerr << "Error" << e.what() << std::endl;
+    return EXIT_FAILURE;
   }
 }

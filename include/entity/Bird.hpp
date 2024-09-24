@@ -15,7 +15,7 @@ class Bird: public AEntity {
         Bird& operator=(const Bird &other);
 
         bool move();
-        void draw(sf::RenderWindow& window);
+        void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
 };
 
