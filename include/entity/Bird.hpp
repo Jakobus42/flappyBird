@@ -1,12 +1,13 @@
 #pragma once
 
+#include "AEntity.hpp"
 namespace entity {
 
 /**
  * @class Bird
  * @brief ...
  */
-class Bird {
+class Bird: public AEntity {
     public:
         Bird();
         ~Bird();
@@ -14,7 +15,6 @@ class Bird {
         Bird& operator=(const Bird &other);
 
     private:
-
 };
 
 } /* namespace entity */
