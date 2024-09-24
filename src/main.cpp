@@ -13,6 +13,8 @@ int main() {
 
   sf::Texture birdTexture;
   sf::Texture bgTexture;
+  sf::Clock clock;
+
 
   if (!birdTexture.loadFromFile("assets/sprites/yellowbird-upflap.png"))
       return EXIT_FAILURE;
@@ -25,13 +27,15 @@ int main() {
 
   bird.setScale(4, 4);
   bird.setPosition((window.getSize().x / 2) - ((birdTexture.getSize().x * bird.getScale().x) / 2), (window.getSize().y / 2)  - ((birdTexture.getSize().y * bird.getScale().y) / 2));
-  
   while (window.isOpen()) {
     for (auto event = sf::Event{}; window.pollEvent(event);) {
       if (((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) || event.type == sf::Event::Closed) {
           window.close();
       }
-      moveBird(bird, event.key.code);
+      if (clock.getElapsedTime().asMilliseconds() > 500) {
+        moveBird(bird, event.key.code);
+        clock.restart();
+      }
     }
     bird.move(0, 2);
     window.draw(background);
