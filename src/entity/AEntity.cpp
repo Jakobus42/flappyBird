@@ -33,4 +33,9 @@ AEntity& AEntity::operator=(const AEntity &) {
     return *this;
 }
 
+const sf::Texture& AEntity::getTexture() const {
+    return _texture;
+}
+
+
 } /* namespace entity */

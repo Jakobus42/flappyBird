@@ -14,6 +14,7 @@ class Bird: public AEntity {
         Bird(const Bird &other);
         Bird& operator=(const Bird &other);
 
+        
     private:
 };
 

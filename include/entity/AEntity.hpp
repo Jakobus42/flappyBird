@@ -11,16 +11,17 @@ namespace entity {
 class AEntity {
     public:
         AEntity();
-        ~AEntity();
+        virtual ~AEntity();
         AEntity(const AEntity &other);
         AEntity& operator=(const AEntity &other);
 
         const sf::Texture& getTexture() const;
         const sf::Sprite& getSprite() const;
-    protected:
-        sf::Texture texture;
-        sf::Sprite sprite;
 
+        virtual bool move() = 0;
+    protected:
+        sf::Texture _texture;
+        sf::Sprite _sprite;
 };
 
 } /* namespace entity */
