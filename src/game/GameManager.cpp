@@ -33,4 +33,8 @@ GameManager& GameManager::operator=(const GameManager &) {
     return *this;
 }
 
+ bool GameManager::checkCollsion(std::size_t x, std::size_t y) const {
+    
+ }
+
 } /* namespace game */

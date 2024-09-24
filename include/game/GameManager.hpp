@@ -20,6 +20,8 @@ class GameManager {
         GameManager(const GameManager &other);
         GameManager& operator=(const GameManager &other);
 
+        bool checkCollsion(std::size_t x, std::size_t y) const;
+
     private:
 
 };

@@ -16,7 +16,6 @@ class Bird: public AEntity {
 
         bool move(std::size_t currentFrame);
         void draw(sf::RenderWindow& window, std::size_t currentFrame);
-        void checkCollsion() const;
 
         bool jump(std::size_t currentFrame);
     private:

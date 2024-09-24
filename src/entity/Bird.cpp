@@ -44,24 +44,13 @@ Bird& Bird::operator=(const Bird& other) {
     return *this;
 }
 
-void Bird::checkCollsion() const {
-    if(_sprite.getPosition().y <= 0) {
-        throw std::runtime_error("you diedddd");
-    }
-    if(_sprite.getPosition().y >= SCREEN_HEIGHT) {
-        throw std::runtime_error("you diedddd");
-    }
-}
-
 bool Bird::jump(std::size_t currentFrame) {
-    checkCollsion();
     _velocity = -13.5f;
     _sprite.move(0, _velocity);
     return 0;
 }
 
 bool Bird::move(std::size_t) {
-    checkCollsion();
     _velocity += 0.65f;
     _sprite.move(0, _velocity);
     return 0;
