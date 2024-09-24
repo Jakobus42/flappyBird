@@ -10,7 +10,7 @@ namespace entity {
  */
 class AEntity {
     public:
-        AEntity();
+        AEntity(const sf::Texture& texture, const sf::Sprite& sprite);
         virtual ~AEntity();
         AEntity(const AEntity &other);
         AEntity& operator=(const AEntity &other);
@@ -20,7 +20,7 @@ class AEntity {
 
         virtual bool move() = 0;
     protected:
-        sf::Texture _texture;
+        std::vector<sf::Texture> _textures;
         sf::Sprite _sprite;
 };
 

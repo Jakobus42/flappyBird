@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "../include/entity/Bird.hpp"
 #include <iostream>
 
 void moveBird(sf::Sprite& bird, sf::Keyboard::Key key) {
@@ -9,13 +10,15 @@ void moveBird(sf::Sprite& bird, sf::Keyboard::Key key) {
 
 int main() {
   auto window = sf::RenderWindow{{1920u, 1080u}, "Flappy Bird"};
-  window.setFramerateLimit(60);
-
   sf::Texture birdTexture;
+
+  window.setFramerateLimit(60);
   sf::Texture bgTexture;
 
   if (!birdTexture.loadFromFile("assets/sprites/yellowbird-upflap.png"))
       return EXIT_FAILURE;
+
+  
 
   if (!bgTexture.loadFromFile("assets/sprites/background-day-wide.png"))
       return EXIT_FAILURE;
