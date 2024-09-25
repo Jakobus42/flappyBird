@@ -68,14 +68,18 @@ bool Pipe::move(std::size_t) {
 }
 
 void Pipe::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    Pipe tmp(*this);
     _sprite.setTexture(_textures[_currentTexture]);
-    tmp._sprite.setTexture(tmp._textures[_currentTexture]);
-    tmp._sprite.setRotation(180);
-    tmp._sprite.move(tmp._sprite.getGlobalBounds().width , -350);
-
+    _secondPipe = _sprite;
+    _secondPipe.setTexture(_textures[_currentTexture]);
+    _secondPipe.rotate(180);
+    _secondPipe.move(_secondPipe.getGlobalBounds().width , -350);
     window.draw(_sprite);
-    window.draw(tmp._sprite);
+    window.draw(_secondPipe);
 }
+
+bool Pipe::checkCollision(std::shared_ptr<entity::AEntity> other) const {
+    return _sprite.getGlobalBounds().intersects(other->getSprite().getGlobalBounds()) || _secondPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
+}
+
 
 } /* namespace entity */

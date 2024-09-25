@@ -51,4 +51,8 @@ void AEntity::setTextures(std::vector<std::string>& texturePaths) {
     }
 }
 
+bool AEntity::checkCollision(std::shared_ptr<entity::AEntity> other) const {
+    return _sprite.getGlobalBounds().intersects(other->_sprite.getGlobalBounds());
+}
+
 } /* namespace entity */

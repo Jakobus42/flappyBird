@@ -50,7 +50,6 @@ Floor& Floor::operator=(const Floor& other) {
 
 bool Floor::move(std::size_t) {
     _sprite.move(_velocity, 0);
-    
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
         _sprite.setPosition(_sprite.getPosition().x + _sprite.getGlobalBounds().width * 2, _sprite.getPosition().y);
     }
@@ -58,7 +57,6 @@ bool Floor::move(std::size_t) {
 }
 
 void Floor::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    std::cout << _sprite.getPosition().x << ' ' << _sprite.getPosition().y << std::endl; 
     window.draw(_sprite);
 }
 

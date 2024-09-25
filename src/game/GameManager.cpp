@@ -61,6 +61,16 @@ void GameManager::start() {
           }
         }
     }
+    for (auto it = _entities.begin(); it != _entities.end() - 1; ++it) {
+      if(_entities.back()->checkCollision((*it))) {
+        return ;
+      }
+      if (auto pipe = std::dynamic_pointer_cast<entity::Pipe>(*it)) {
+          if(pipe->checkCollision(_entities.back())) {
+            return ;
+          }
+      }
+    }
     _window.draw(_background);
     for(auto it = _entities.begin(); it != _entities.end(); ++it) {
       (*it)->move(_currentFrame);
@@ -70,10 +80,6 @@ void GameManager::start() {
     _window.clear();
     _currentFrame++;
   }
-}
-
- bool GameManager::checkCollsion(std::size_t, std::size_t) const {
-  return true;
 }
 
 } /* namespace game */

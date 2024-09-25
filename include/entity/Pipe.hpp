@@ -20,10 +20,12 @@ class Pipe: public AEntity {
 
         bool move(std::size_t currentFrame);
         void draw(sf::RenderWindow& window, std::size_t currentFrame);
+        bool checkCollision(std::shared_ptr<entity::AEntity> other) const;
 
         static int64_t getRandomY();
     private:
         std::size_t _currentTexture;
+        sf::Sprite _secondPipe;
         float _velocity;
         std::size_t _id;
         std::size_t _y;
