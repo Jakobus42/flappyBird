@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "../entity/AEntity.hpp"
 #include "../entity/Bird.hpp"
+#include "../entity/Pipe.hpp"
 
 namespace game {
 
