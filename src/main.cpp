@@ -5,9 +5,18 @@
 int main()
 {
   try {
-    game::GameManager game;
-    game.start();
-  } catch (std::exception &e) {
+    while (true) {
+        game::GameManager game;
+        if(game.menu()) {
+          break ;
+        }
+        if(game.run()) {
+          break ;
+        }
+        game.reset();  
+    }
+  }
+   catch (std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       return EXIT_FAILURE;
   }
