@@ -13,7 +13,7 @@ _velocity(-10.0f),
 _id(id),
 _y(getRandomY()) {
     std::vector<std::string> texturePaths = {
-        "/Users/jakobsadjina/timo/flappyBird/assets/sprites/pipe-green.png"
+        "assets/sprites/pipe-green.png"
     };
     setTextures(texturePaths);
     _sprite.setScale(3, 3);
