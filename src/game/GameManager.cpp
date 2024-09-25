@@ -9,8 +9,7 @@ GameManager::GameManager():
 _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}),
 _currentFrame(0),
 _entities{std::make_shared<entity::Bird>(_window.getSize().x / 4, _window.getSize().y / 2)} {
-  std::srand(std::time(0));
-  for (std::size_t i = 0; i < 10; ++i) {
+  for (std::size_t i = 0; i < 4; ++i) {
     _entities.push_back(std::make_shared<entity::Pipe>(i));
   }
 }
