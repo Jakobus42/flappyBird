@@ -5,6 +5,7 @@
 
 namespace entity {
 
+
 /**
  * @class AEntity
  * @brief ...
@@ -21,11 +22,13 @@ class AEntity {
 
         virtual bool move(std::size_t currentFrame) = 0;
         virtual void draw(sf::RenderWindow& window, std::size_t currentFrame) = 0;
+        virtual bool checkCollision(std::shared_ptr<entity::AEntity> other) const;
     protected:
         std::vector<sf::Texture> _textures;
         sf::Sprite _sprite;
 
         void setTextures(std::vector<std::string>& texturePaths);
 };
+
 
 } /* namespace entity */

@@ -15,7 +15,7 @@ _velocity(0) {
         "assets/sprites/yellowbird-downflap.png",
     };
     setTextures(texturePaths);
-    _sprite.setScale(4, 4);
+    _sprite.setScale(3, 3);
     _sprite.setPosition(x, y - (_textures[_currentTexture].getSize().y * _sprite.getScale().y) / 2);
 }
 
@@ -58,6 +58,11 @@ bool Bird::move(std::size_t) {
 
 void Bird::draw(sf::RenderWindow& window, std::size_t currentFrame) {
     _sprite.setTexture(_textures[_currentTexture]);
+    if(_velocity < 0) {
+        _sprite.setRotation(_velocity);
+    } else {
+        _sprite.setRotation(_velocity * 2);
+    }
     window.draw(_sprite);
     if (currentFrame % 3 == 1){
         _currentTexture++;
