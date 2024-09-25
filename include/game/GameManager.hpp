@@ -6,6 +6,7 @@
 #include "../entity/AEntity.hpp"
 #include "../entity/Bird.hpp"
 #include "../entity/Pipe.hpp"
+#include "../entity/Floor.hpp"
 
 namespace game {
 

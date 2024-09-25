@@ -7,11 +7,14 @@ namespace game {
  */
 GameManager::GameManager(): 
 _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}),
-_currentFrame(0),
-_entities{std::make_shared<entity::Bird>(_window.getSize().x / 4, _window.getSize().y / 2)} {
+_currentFrame(0) {
+  for (std::size_t i = 0; i < 2; ++i) {
+    _entities.push_back(std::make_shared<entity::Floor>(i));
+  }
   for (std::size_t i = 0; i < 4; ++i) {
     _entities.push_back(std::make_shared<entity::Pipe>(i));
   }
+  _entities.push_back(std::make_shared<entity::Bird>(_window.getSize().x / 4, _window.getSize().y / 2));
 }
 
 /**
@@ -40,17 +43,10 @@ GameManager& GameManager::operator=(const GameManager &) {
 void GameManager::start() {
   _window.setFramerateLimit(60);
   sf::Texture backgroundTexture;
-  sf::Texture floorTexture;
-  if (!floorTexture.loadFromFile("assets/sprites/base_wide_only.png")) 
-  {
-      throw std::runtime_error("cant load assets/sprites/base_wide_only.png");
-  }
   if (!backgroundTexture.loadFromFile("assets/sprites/background-day-wide.png")) {
       throw std::runtime_error("cant load assets/sprites/background-day-wide.png");
   }
   _background.setTexture(backgroundTexture);
-  _floor.setTexture(floorTexture);
-  _floor.setPosition(0, _window.getSize().y - floorTexture.getSize().y);
   while (_window.isOpen())
   {
     for (auto event = sf::Event{}; _window.pollEvent(event);)
@@ -66,7 +62,6 @@ void GameManager::start() {
         }
     }
     _window.draw(_background);
-    _window.draw(_floor);
     for(auto it = _entities.begin(); it != _entities.end(); ++it) {
       (*it)->move(_currentFrame);
       (*it)->draw(_window, _currentFrame);

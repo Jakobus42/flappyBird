@@ -58,6 +58,11 @@ bool Bird::move(std::size_t) {
 
 void Bird::draw(sf::RenderWindow& window, std::size_t currentFrame) {
     _sprite.setTexture(_textures[_currentTexture]);
+    if(_velocity < 0) {
+        _sprite.setRotation(_velocity);
+    } else {
+        _sprite.setRotation(_velocity * 2);
+    }
     window.draw(_sprite);
     if (currentFrame % 3 == 1){
         _currentTexture++;

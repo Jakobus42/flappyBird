@@ -74,7 +74,6 @@ void Pipe::draw(sf::RenderWindow& window, std::size_t currentFrame) {
     tmp._sprite.setRotation(180);
     tmp._sprite.move(tmp._sprite.getGlobalBounds().width , -350);
 
-    // tmp._sprite.setPosition(SCREEN_WIDTH + PIPE_SPACING, _y - (_sprite.getGlobalBounds().height - 200));
     window.draw(_sprite);
     window.draw(tmp._sprite);
 }
