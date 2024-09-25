@@ -101,10 +101,10 @@ bool GameManager::menu() {
         }
       }
       for(auto it = _entities.begin(); it != _entities.end(); ++it) {
-      if(std::dynamic_pointer_cast<entity::Floor>(*it)) {
-        (*it)->move(_currentFrame);
-        (*it)->draw(_window, _currentFrame);
-      }
+        if(std::dynamic_pointer_cast<entity::Floor>(*it)) {
+          (*it)->move(_currentFrame);
+          (*it)->draw(_window, _currentFrame);
+        }
     }
     _window.display();
     _window.clear();
