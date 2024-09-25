@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <algorithm>
+#include "../entity/AEntity.hpp"
+#include "../entity/Bird.hpp"
 
 namespace game {
 
@@ -20,9 +22,15 @@ class GameManager {
         GameManager(const GameManager &other);
         GameManager& operator=(const GameManager &other);
 
+        void start();
         bool checkCollsion(std::size_t x, std::size_t y) const;
 
     private:
+        sf::RenderWindow _window;
+        std::vector<std::shared_ptr<entity::AEntity>> _entities;
+        sf::Sprite _background;
+        sf::Sprite _floor;
+        std::size_t _currentFrame;
 
 };
 

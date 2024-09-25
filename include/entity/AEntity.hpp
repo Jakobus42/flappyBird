@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "../game/GameManager.hpp"
 
 namespace entity {
 
