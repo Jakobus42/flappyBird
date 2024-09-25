@@ -15,7 +15,7 @@ _velocity(0) {
         "assets/sprites/yellowbird-downflap.png",
     };
     setTextures(texturePaths);
-    _sprite.setScale(4, 4);
+    _sprite.setScale(3, 3);
     _sprite.setPosition(x, y - (_textures[_currentTexture].getSize().y * _sprite.getScale().y) / 2);
 }
 

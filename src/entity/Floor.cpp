@@ -51,7 +51,7 @@ Floor& Floor::operator=(const Floor& other) {
 bool Floor::move(std::size_t) {
     _sprite.move(_velocity, 0);
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
-        _sprite.setPosition(_sprite.getPosition().x + _sprite.getGlobalBounds().width * 2, _sprite.getPosition().y);
+        _sprite.setPosition(_sprite.getPosition().x + _sprite.getGlobalBounds().width * 4, _sprite.getPosition().y);
     }
     return 0;
 }
