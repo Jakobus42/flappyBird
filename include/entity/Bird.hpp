@@ -7,20 +7,25 @@ namespace entity {
  * @class Bird
  * @brief ...
  */
-class Bird: public AEntity {
-    public:
-        Bird(std::size_t x, std::size_t y);
-        ~Bird();
-        Bird(const Bird &other);
-        Bird& operator=(const Bird &other);
+class Bird : public AEntity {
+   public:
+    Bird(
+        std::size_t x, 
+        std::size_t y, 
+        const std::vector<std::string>& texturePaths, 
+        float velocity, 
+        float jumpForce);
+    ~Bird();
+    Bird(const Bird& other);
+    Bird& operator=(const Bird& other);
 
-        bool move(std::size_t currentFrame);
-        void draw(sf::RenderWindow& window, std::size_t currentFrame);
+    bool move();
+    void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
-        bool jump(std::size_t currentFrame);
-    private:
-        std::size_t _currentTexture;
-        float _velocity;
+    bool jump(std::size_t currentFrame);
+
+   private:
+    const float _jumpForce;
 };
 
 } /* namespace entity */

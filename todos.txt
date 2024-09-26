@@ -1,0 +1,12 @@
+//TODO
+
+now:
+- refactor pipe logic
+- refactor gamemanager
+- entities in map
+- ScreenSize gloabl?
+
+later:
+- remove menu and write new one
+- smaller hitbox for bird
+- 
