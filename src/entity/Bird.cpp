@@ -10,9 +10,9 @@ AEntity(),
 _currentTexture(0),
 _velocity(0) {
     std::vector<std::string> texturePaths = {
-        "assets/sprites/yellowbird-upflap.png",
-        "assets/sprites/yellowbird-midflap.png",
-        "assets/sprites/yellowbird-downflap.png",
+        "../../assets/sprites/yellowbird-upflap.png",
+        "../../assets/sprites/yellowbird-midflap.png",
+        "../../assets/sprites/yellowbird-downflap.png",
     };
     setTextures(texturePaths);
     _sprite.setScale(3, 3);

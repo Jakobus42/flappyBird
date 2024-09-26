@@ -8,7 +8,7 @@ namespace game {
 GameManager::GameManager(): 
 _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}),
 _currentFrame(0) {
-  if (!_backgroundTexture.loadFromFile("assets/sprites/background-day-wide.png")) {
+  if (!_backgroundTexture.loadFromFile("../../assets/sprites/background-day-wide.png")) {
       throw std::runtime_error("cant load assets/sprites/background-day-wide.png");
   }
   _window.setFramerateLimit(60);

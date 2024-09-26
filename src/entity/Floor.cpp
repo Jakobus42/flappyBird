@@ -13,7 +13,7 @@ _velocity(-10.0f),
 _id(id),
 _currentTexture(0) {
     std::vector<std::string> texturePaths = {
-        "assets/sprites/base_wide_only.png"
+        "../../assets/sprites/base_wide_only.png"
     };
     setTextures(texturePaths);
      _sprite.setTexture(_textures[_currentTexture]);
