@@ -29,18 +29,12 @@ class GameManager {
         bool run();
         void reset();
         bool menu();
-        bool checkCollsion(std::size_t x, std::size_t y) const;
-
-
-
     private:
         sf::RenderWindow _window;
         std::vector<std::shared_ptr<entity::AEntity>> _entities;
         sf::Sprite _background;
         sf::Texture _backgroundTexture;
-        sf::Sprite _floor;
         std::size_t _currentFrame;
-        bool quit;
 
 };
 

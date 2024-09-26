@@ -84,32 +84,86 @@ void GameManager::reset() {
   _window.clear();
   _currentFrame = 0;
 }
-
 bool GameManager::menu() {
-  while (_window.isOpen()) {
-      _window.draw(_background);
-      for (auto event = sf::Event{}; _window.pollEvent(event);)
-      {
-        if (((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) || event.type == sf::Event::Closed)
-        {
-          _window.close();
-          return 1;
-        }
-        if (event.key.code == sf::Keyboard::Space)
-        {
-          return 0;
-        }
-      }
-      for(auto it = _entities.begin(); it != _entities.end(); ++it) {
-      if(std::dynamic_pointer_cast<entity::Floor>(*it)) {
-        (*it)->move(_currentFrame);
-        (*it)->draw(_window, _currentFrame);
-      }
+    sf::Font font;
+    sf::Event event;
+    if (!font.loadFromFile("font.ttf")) {
+        throw std::runtime_error("can't open font");
     }
-    _window.display();
-    _window.clear();
-  }
-  return true;
+
+    sf::Text title;
+    title.setFont(font);
+    title.setString("Flappy Birds");
+    title.setCharacterSize(80);
+    title.setFillColor(sf::Color::White);
+    title.setStyle(sf::Text::Bold);
+    title.setPosition(_window.getSize().x / 2 - title.getGlobalBounds().width / 2, 100);
+
+    sf::Text instruction;
+    instruction.setFont(font);
+    instruction.setString("Press SPACE to Start or ESC to Exit");
+    instruction.setCharacterSize(50);
+    instruction.setFillColor(sf::Color::White);
+    instruction.setPosition(_window.getSize().x / 2 - instruction.getGlobalBounds().width / 2, _window.getSize().y / 2);
+
+    bool spacePressed = false;
+    bool scaleUp = true;
+    float instructionScale = 1.0f;
+    sf::Clock clock;
+    float fadeAlpha = 255;
+    bool fading = false;
+
+    while (_window.isOpen()) {
+        _window.clear();
+        _window.draw(_background);
+
+        while (_window.pollEvent(event)) {
+            if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) || event.type == sf::Event::Closed) {
+                _window.close();
+                return true;
+            }
+            if (event.key.code == sf::Keyboard::Space && !spacePressed) {
+                spacePressed = true;
+                fading = true;
+            }
+        }
+        float deltaTime = clock.restart().asSeconds();
+        if (!spacePressed) {
+            if (scaleUp) {
+                instructionScale += 0.5f * deltaTime;
+                if (instructionScale >= 1.1f) {
+                    scaleUp = false;
+                }
+            } else {
+                instructionScale -= 0.5f * deltaTime;
+                if (instructionScale <= 1.0f) {
+                    scaleUp = true;
+                }
+            }
+            instruction.setScale(instructionScale, instructionScale);
+            instruction.setPosition(_window.getSize().x / 2 - instruction.getGlobalBounds().width / 2, _window.getSize().y / 2);
+        }
+        if (fading) {
+            fadeAlpha -= 400 * deltaTime;
+            if (fadeAlpha <= 0) {
+                return false;
+            }
+            instruction.setFillColor(sf::Color(255, 255, 255, fadeAlpha));
+            title.setFillColor(sf::Color(255, 255, 255, fadeAlpha));  
+        }
+        _window.draw(title);
+        _window.draw(instruction);
+        for (auto it = _entities.begin(); it != _entities.end(); ++it) {
+            if (std::dynamic_pointer_cast<entity::Floor>(*it)) {
+                (*it)->move(_currentFrame);
+                (*it)->draw(_window, _currentFrame);
+            }
+        }
+        _window.display();
+    }
+
+    return true;
 }
+
 
 } /* namespace game */
