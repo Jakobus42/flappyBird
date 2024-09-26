@@ -7,7 +7,6 @@
 #include "../entity/Bird.hpp"
 #include "../entity/Pipe.hpp"
 #include "../entity/Floor.hpp"
-#include "../entity/Button.hpp"
 
 namespace game {
 
@@ -41,7 +40,6 @@ class GameManager {
         sf::Texture _backgroundTexture;
         sf::Sprite _floor;
         std::size_t _currentFrame;
-        entity::Button quit;
 
 };
 
