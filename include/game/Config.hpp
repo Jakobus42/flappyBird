@@ -9,30 +9,26 @@ namespace game {
 
 class Config {
     public:
-        struct TextureConfig {
-            std::vector<std::string> textures;
-        };
-
         struct BirdConfig {
             float velocity;
             float jumpForce;
-            std::map<std::string, TextureConfig> textures;
+            std::map<std::string, std::vector<std::string>> textures;
         };
 
         struct PipeConfig {
             float velocity;
             float spacing;
-            std::map<std::string, TextureConfig> textures;
+            std::map<std::string, std::vector<std::string>> textures;
         };
 
         struct FloorConfig {
             float velocity;
-            std::map<std::string, TextureConfig> textures;
+            std::map<std::string, std::vector<std::string>> textures;
         };
 
         struct BackgroundConfig {
             float velocity;
-            std::map<std::string, TextureConfig> textures;
+            std::map<std::string, std::vector<std::string>> textures;
         };
 
         void loadFromFile(const std::string &filename);
@@ -48,7 +44,7 @@ class Config {
         FloorConfig _floorConfig;
         BackgroundConfig _backgroundConfig;
 
-        void loadTextureConfig(const nlohmann::json& json, std::map<std::string, TextureConfig>& textures);
+        void loadTextureConfig(const nlohmann::json& json, std::map<std::string, std::vector<std::string>>& textures);
 };
 
 } // namespace game

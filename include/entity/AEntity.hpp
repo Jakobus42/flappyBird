@@ -12,7 +12,7 @@ namespace entity {
  */
 class AEntity {
     public:
-        AEntity();
+        AEntity(std::size_t velocity, std::vector<std::string> textures);
         virtual ~AEntity();
         AEntity(const AEntity &other);
         AEntity& operator=(const AEntity &other);
@@ -25,6 +25,7 @@ class AEntity {
         virtual bool checkCollision(std::shared_ptr<entity::AEntity> other) const;
     protected:
         std::vector<sf::Texture> _textures;
+        std::size_t _velocity;
         sf::Sprite _sprite;
 
         void setTextures(std::vector<std::string>& texturePaths);
