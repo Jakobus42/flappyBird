@@ -57,7 +57,7 @@ void Config::loadIntoMap(const std::string& folder, std::unordered_map<std::stri
  * @brief Recursively load all textures and sounds from a directory structure.
  * @param rootFolder The base folder to start scanning (e.g., "assets").
  */
-void Config::load(const std::string &rootFolder) {
+void Config::loadAssets(const std::string &rootFolder) {
     if (!fs::exists(rootFolder)) {
         throw std::runtime_error("Root folder does not exist: " + rootFolder);
     }
@@ -71,6 +71,10 @@ void Config::load(const std::string &rootFolder) {
             }
         }
     }
+}
+
+void loadConfig(const std::string& configFile) {
+    
 }
 
 const std::unordered_map<std::string, std::vector<std::string>>& Config::getTextureCategory(const std::string& category) const {

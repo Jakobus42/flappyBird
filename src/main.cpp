@@ -17,7 +17,7 @@ int main()
     //     game.reset();  
     // }
     game::Config config;
-      config.load("assets");
+      config.loadAssets("assets");
       auto birdTextures = config.getTextureCategory("bird");
       std::cout << "Textures for 'bird' category:" << std::endl;
       for (const auto& [subcategory, texturePaths] : birdTextures) {
