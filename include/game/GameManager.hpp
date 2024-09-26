@@ -36,6 +36,12 @@ class GameManager {
     Config _config;
     std::vector<std::shared_ptr<entity::AEntity>> _entities;
     std::size_t _currentFrame;
+
+    template <typename T>
+    std::shared_ptr<T> getEntity() const;
+
+    template <typename T>
+    std::vector<std::shared_ptr<T>> getEntitiesOfType() const;
 };
 
 } /* namespace game */

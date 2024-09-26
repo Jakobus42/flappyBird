@@ -54,7 +54,29 @@ void GameManager::init(const std::string& configPath) {
                                      birdConfig.jumpForce));
 }
 
+template <typename T>
+std::shared_ptr<T> GameManager::getEntity() const {
+    for (const auto& entity : _entities) {
+        if (auto specificEntity = std::dynamic_pointer_cast<T>(entity)) {
+            return specificEntity;
+        }
+    }
+    throw std::runtime_error("Cant find entity");
+}
+
+template <typename T>
+std::vector<std::shared_ptr<T>> GameManager::getEntitiesOfType() const {
+    std::vector<std::shared_ptr<T>> result;
+    for (const auto& entity : _entities) {
+        if (auto specificEntity = std::dynamic_pointer_cast<T>(entity)) {
+            result.push_back(specificEntity);
+        }
+    }
+    return result;
+}
 bool GameManager::run() {
+    auto bird = getEntity<entity::Bird>();
+
     while (_window.isOpen()) {
         for (auto event = sf::Event{}; _window.pollEvent(event);) {
             if (((event.type == sf::Event::KeyPressed) &&
@@ -62,24 +84,27 @@ bool GameManager::run() {
                 event.type == sf::Event::Closed) {
                 return 1;
             }
-            for (auto it = _entities.begin();
-                 it != _entities.end() && event.key.code == sf::Keyboard::Space; ++it) {
-                if (auto bird = std::dynamic_pointer_cast<entity::Bird>(*it)) {
-                    (*bird).jump(_currentFrame);
-                }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
+                bird->jump(_currentFrame);
             }
         }
-        _window.draw(_background);
-        for (auto it = _entities.begin(); it != _entities.end(); ++it) {
-            _entities.back()->checkCollision((*it))(*it)->move(_currentFrame);
-            (*it)->draw(_window, _currentFrame);
+        _window.clear();
+        for (const auto& entity : _entities) {
+            if (auto pipe = std::dynamic_pointer_cast<entity::Pipe>(entity) ||
+                auto floor = std::dynamic_pointer_cast<entity::Floor>(entity)) {
+                if (bird && bird->checkCollision(entity)) {
+                    return 0;
+                }
+            }
+            entity->move(_currentFrame);
+            entity->draw(_window, _currentFrame);
         }
         _window.display();
-        _window.clear();
         _currentFrame++;
     }
     return 0;
 }
+
 
 void GameManager::reset() {
     _entities.clear();
