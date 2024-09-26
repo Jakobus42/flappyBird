@@ -9,10 +9,7 @@ namespace entity {
  */
 AEntity::AEntity(float velocity, const std::vector<std::string>& texturePaths)
     : _velocity(velocity), _currentTexture(0) {
-    // Load the textures using the provided file paths
     setTextures(texturePaths);
-
-    // Set the initial texture for the sprite if available
     if (!_textures.empty()) {
         _sprite.setTexture(_textures[_currentTexture]);
     }

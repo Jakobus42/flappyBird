@@ -7,7 +7,7 @@
 int main() {
     try {
         game::GameManager game;
-        game.init();
+        game.init("config.json");
         if(game.run()) {
             return 0;
         }

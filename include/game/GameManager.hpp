@@ -40,8 +40,6 @@ class GameManager {
     template <typename T>
     std::shared_ptr<T> getEntity() const;
 
-    template <typename T>
-    std::vector<std::shared_ptr<T>> getEntitiesOfType() const;
 };
 
 } /* namespace game */

@@ -6,7 +6,7 @@ namespace entity {
  * @brief Constructs a new Bird object.
  */
 Bird::Bird(std::size_t x, std::size_t y, const std::vector<std::string>& texturePaths,
-           std::size_t velocity, std::size_t jumpForce)
+           float velocity, float jumpForce)
     : AEntity(velocity, texturePaths), _jumpForce(jumpForce) {
     _sprite.setScale(3, 3);
     _sprite.setPosition(x, y - (_textures[_currentTexture].getSize().y * _sprite.getScale().y) / 2);

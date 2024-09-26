@@ -35,23 +35,19 @@ void GameManager::init(const std::string& configPath) {
     _config.loadFromFile(configPath);
     const auto& backgroundConfig = _config.getBackgroundConfig();
     for (std::size_t i = 0; i < 2; ++i) {
-        _entities.push_back(
-            entity::Background(i, backgroundConfig.velocity, backgroundConfig.textures));
+        _entities.push_back(std::make_shared<entity::Background>(i, backgroundConfig.velocity, backgroundConfig.textures.at("default"))); //TODO add a texture logic
     }
     const auto& floorConfig = _config.getFloorConfig();
     for (std::size_t i = 0; i < 2; ++i) {
-        _entities.push_back(entity::Floor(i, floorConfig.velocity, floorConfig.textures));
+        _entities.push_back(std::make_shared<entity::Floor>(i, floorConfig.velocity, floorConfig.textures.at("default")));
     }
     const auto& pipeConfig = _config.getPipeConfig();
     for (std::size_t i = 0; i < 4; ++i) {
         _entities.push_back(
-            entity::Pipe(i % 2, pipeConfig.velocity, pipeConfig.spacing, pipeConfig.textures));
+            std::make_shared<entity::Pipe>(i, i % 2, pipeConfig.velocity, pipeConfig.spacing, 640 ,pipeConfig.textures.at("default"))); // TODO load gap in config
     }
-    const auto& birdConfig = _config.getBirdConfig();
-    _entities.push_back(entity::Bird(_window.getSize().x / 3, _window.getSize().y / 2,
-                                     birdConfig.textures, _window.getSize().y / 2,
-                                     birdConfig.velocity, _window.getSize().y / 2,
-                                     birdConfig.jumpForce));
+    // const auto& birdConfig = _config.getBirdConfig();
+    // _entities.push_back(std::make_shared<entity::Bird>(_window.getSize().x / 3, _window.getSize().y / 2, birdConfig.textures.at("default"), birdConfig.velocity, birdConfig.jumpForce))
 }
 
 template <typename T>
@@ -64,16 +60,7 @@ std::shared_ptr<T> GameManager::getEntity() const {
     throw std::runtime_error("Cant find entity");
 }
 
-template <typename T>
-std::vector<std::shared_ptr<T>> GameManager::getEntitiesOfType() const {
-    std::vector<std::shared_ptr<T>> result;
-    for (const auto& entity : _entities) {
-        if (auto specificEntity = std::dynamic_pointer_cast<T>(entity)) {
-            result.push_back(specificEntity);
-        }
-    }
-    return result;
-}
+
 bool GameManager::run() {
     auto bird = getEntity<entity::Bird>();
 
@@ -90,9 +77,8 @@ bool GameManager::run() {
         }
         _window.clear();
         for (const auto& entity : _entities) {
-            if (auto pipe = std::dynamic_pointer_cast<entity::Pipe>(entity) ||
-                auto floor = std::dynamic_pointer_cast<entity::Floor>(entity)) {
-                if (bird && bird->checkCollision(entity)) {
+            if (std::dynamic_pointer_cast<entity::Pipe>(entity) || std::dynamic_pointer_cast<entity::Floor>(entity)) {
+                if (bird->checkCollision(entity)) {
                     return 0;
                 }
             }
