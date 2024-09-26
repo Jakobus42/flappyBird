@@ -34,7 +34,6 @@ class GameManager {
         std::vector<std::shared_ptr<entity::AEntity>> _entities;
         sf::Sprite _background;
         sf::Texture _backgroundTexture;
-        sf::Sprite _floor;
         std::size_t _currentFrame;
 
 };
