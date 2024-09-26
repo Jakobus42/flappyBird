@@ -35,40 +35,28 @@ void GameManager::init(const std::string& configPath) {
     _config.loadFromFile(configPath);
     const auto& backgroundConfig = _config.getBackgroundConfig();
     for (std::size_t i = 0; i < 2; ++i) {
-        _entities.push_back(std::make_shared<entity::Background>(i, backgroundConfig.velocity, backgroundConfig.textures.at("default"))); //TODO add a texture logic
-    }
-    const auto& floorConfig = _config.getFloorConfig();
-    for (std::size_t i = 0; i < 2; ++i) {
-        _entities.push_back(std::make_shared<entity::Floor>(i, floorConfig.velocity, floorConfig.textures.at("default")));
+        _entities.insert({Entitiy::BACKGROUND, std::make_shared<entity::Background>(i, backgroundConfig.velocity, backgroundConfig.textures.at("default"))});
     }
     const auto& pipeConfig = _config.getPipeConfig();
     for (std::size_t i = 0; i < 4; ++i) {
-        _entities.push_back(
-            std::make_shared<entity::PipePair>(pipeConfig.spacing, pipeConfig.velocity, 640, pipeConfig.textures.at("default"))); // TODO load gap in config
+        _entities.insert({Entitiy::PIPE, std::make_shared<entity::PipePair> (i, pipeConfig.velocity, pipeConfig.spacing, pipeConfig.gap, pipeConfig.textures.at("default"))});
     }
     const auto& birdConfig = _config.getBirdConfig();
     auto birdy = std::make_shared<entity::Bird>(
         _window.getSize().x / 3, 
         _window.getSize().y / 2, 
-        birdConfig.textures.at("default"), 
+        birdConfig.textures.at("default"),
         birdConfig.velocity, 
         birdConfig.jumpForce);
-    _entities.push_back(birdy);
-}
-
-template <typename T>
-std::shared_ptr<T> GameManager::getEntity() const {
-    for (const auto& entity : _entities) {
-        if (auto specificEntity = std::dynamic_pointer_cast<T>(entity)) {
-            return specificEntity;
-        }
+    _entities.insert({Entitiy::BIRD, birdy});
+    const auto& floorConfig = _config.getFloorConfig();
+    for (std::size_t i = 0; i < 2; ++i) {
+        _entities.insert({Entitiy::FLOOR, std::make_shared<entity::Background>(i, floorConfig.velocity, floorConfig.textures.at("default"))});
     }
-    throw std::runtime_error("Cant find entity");
 }
-
 
 bool GameManager::run() {
-    auto bird = getEntity<entity::Bird>();
+      auto birdy = _entities.find(Entitiy::BIRD)->second;
 
     while (_window.isOpen()) {
         for (auto event = sf::Event{}; _window.pollEvent(event);) {
@@ -78,15 +66,16 @@ bool GameManager::run() {
                 return 1;
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
-                bird->jump(_currentFrame);
+                auto bird = std::dynamic_pointer_cast<entity::Bird>(birdy);
+                if (bird) {
+                    bird->jump(_currentFrame);
+                }
             }
         }
         _window.clear();
-        for (const auto& entity : _entities) {
-            if (std::dynamic_pointer_cast<entity::PipePair>(entity) || std::dynamic_pointer_cast<entity::Floor>(entity)) {
-                if (bird->checkCollision(entity)) {
-                    return 0;
-                }
+        for (const auto& [type, entity] : _entities) {
+            if (type == Entitiy::PIPE || type == Entitiy::FLOOR) {
+                entity->checkCollision(birdy);
             }
             entity->move();
             entity->draw(_window, _currentFrame);
@@ -94,7 +83,7 @@ bool GameManager::run() {
         _window.display();
         _currentFrame++;
     }
-    return 0;
+    return 1;
 }
 
 

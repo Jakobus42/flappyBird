@@ -1,8 +1,5 @@
 #pragma once
 
-#include <ctime>
-#include <random>
-
 #include "../game/GameManager.hpp"
 #include "AEntity.hpp"
 

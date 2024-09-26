@@ -18,6 +18,7 @@ class Config {
     struct PipeConfig {
         float velocity;
         float spacing;
+        float gap;
         std::map<std::string, std::vector<std::string>> textures;
     };
 

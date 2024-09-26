@@ -29,7 +29,6 @@ add_executable(flappyBird
     src/entity/Bird.cpp 
     src/entity/AEntity.cpp 
     src/entity/PipePair.cpp 
-    src/entity/Floor.cpp 
     src/game/GameManager.cpp 
     src/game/Config.cpp 
     src/entity/Background.cpp

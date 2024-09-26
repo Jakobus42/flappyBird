@@ -1,11 +1,12 @@
 //TODO
 
 now:
-- dont hardcode values. eg. get ScreenSize via a function etc.
-- dont hardcode font
-- load costants via a config file
-
-later:
 - refactor pipe logic
 - refactor gamemanager
+- entities in map
+- ScreenSize gloabl?
+
+later:
 - remove menu and write new one
+- smaller hitbox for bird
+- 

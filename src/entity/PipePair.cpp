@@ -6,18 +6,20 @@ namespace entity {
 /**
  * @brief Constructs a new PipePair object.
  */
-PipePair::PipePair(float velocity, std::size_t spacing, std::size_t gap, const std::vector<std::string>& texturePaths)
+PipePair::PipePair(std::size_t id, float velocity, std::size_t spacing, std::size_t gap, const std::vector<std::string>& texturePaths)
     : AEntity(velocity, texturePaths),
-      _gap(gap),
-      _randomY(getRandomY()) {
+      _gap(gap), //TODO load from config
+      _randomY(getRandomY()), 
+      _id(id),
+      _spacing(spacing) {
     _lowerPipe.setTexture(_textures[_currentTexture]);
     _upperPipe.setTexture(_textures[_currentTexture]);
 
     _lowerPipe.setScale(3, 3);
     _upperPipe.setScale(3, 3);
     _upperPipe.setRotation(180);
-    _lowerPipe.setPosition(SCREEN_WIDTH, _randomY); //TODO dont hardcode
-    _upperPipe.setPosition(SCREEN_WIDTH, getUpperPipeY());
+    _lowerPipe.setPosition(SCREEN_WIDTH + (_id * _spacing), _randomY); //TODO dont hardcode
+    _upperPipe.setPosition(SCREEN_WIDTH + (_id * _spacing), getUpperPipeY());
 }
 
 /**
@@ -53,10 +55,10 @@ PipePair& PipePair::operator=(const PipePair& other) {
  * @brief Get a random Y position for the lower pipe.
  * @return The Y position.
  */
-std::size_t PipePair::geRandomY() {
+int64_t PipePair::getRandomY() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(SCREEN_HEIGHT - SCREEN_HEIGHT / 1.5, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
+    std::uniform_int_distribution<> dist(SCREEN_HEIGHT - SCREEN_HEIGHT / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
     return dist(gen);
 }
 
@@ -64,8 +66,14 @@ std::size_t PipePair::geRandomY() {
  * @brief Get Y position for the upper pipe based on the lower pipe.
  * @return The Y position for the upper pipe.
  */
-std::size_t PipePair::getUpperPipeY() {
-    return _randomY - _gap - _lowerPipe.getGlobalBounds().height;
+int64_t PipePair::getUpperPipeY() {
+    return _randomY - _gap;
+}
+
+bool PipePair::checkCollision(std::shared_ptr<entity::AEntity> other) const {
+    _lowerPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
+    _upperPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
+    return true;
 }
 
 /**
@@ -75,8 +83,9 @@ std::size_t PipePair::getUpperPipeY() {
 bool PipePair::move() {
     _lowerPipe.move(-_velocity, 0);
     _upperPipe.move(-_velocity, 0);
-    if (_lowerPipe.getPosition().x + _lowerPipe.getGlobalBounds().width < 0) {
-        return true;
+    if (_lowerPipe.getPosition().x < - _lowerPipe.getGlobalBounds().width) {
+         _lowerPipe.setPosition(SCREEN_WIDTH + _spacing, _randomY);
+         _upperPipe.setPosition(SCREEN_WIDTH + _spacing, getUpperPipeY());
     }
     return false;
 }

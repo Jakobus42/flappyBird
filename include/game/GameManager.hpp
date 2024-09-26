@@ -7,8 +7,6 @@
 #include "../entity/AEntity.hpp"
 #include "../entity/Background.hpp"
 #include "../entity/Bird.hpp"
-#include "../entity/Floor.hpp"
-#include "../entity/Pipe.hpp"
 #include "../entity/PipePair.hpp"
 #include "../game/Config.hpp"
 
@@ -32,14 +30,17 @@ class GameManager {
     bool run();
     void reset();
 
+
    private:
+
+    enum class Entitiy { BIRD, PIPE, FLOOR, BACKGROUND };
+    enum class GameState { MENU, PLAY, EXIT };
+
+
     sf::RenderWindow _window;
     Config _config;
-    std::vector<std::shared_ptr<entity::AEntity>> _entities;
+    std::multimap<Entitiy, std::shared_ptr<entity::AEntity>> _entities;
     std::size_t _currentFrame;
-
-    template <typename T>
-    std::shared_ptr<T> getEntity() const;
 
 };
 

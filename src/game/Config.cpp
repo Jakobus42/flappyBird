@@ -31,6 +31,7 @@ void Config::loadFromFile(const std::string& filename) {
 
     _pipeConfig.velocity = configJson["pipeConfig"]["velocity"];
     _pipeConfig.spacing = configJson["pipeConfig"]["spacing"];
+    _pipeConfig.gap = configJson["pipeConfig"]["gap"];
     loadTextureConfig(configJson["pipeConfig"]["textures"], _pipeConfig.textures);
 
     _floorConfig.velocity = configJson["floorConfig"]["velocity"];
