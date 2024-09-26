@@ -33,15 +33,19 @@ class GameManager {
 
    private:
 
-    enum class Entitiy { BIRD, PIPE, FLOOR, BACKGROUND };
+    enum class EntitiyType { BIRD, PIPE, FLOOR, BACKGROUND };
     enum class GameState { MENU, PLAY, EXIT };
-
+    struct Entity {
+        EntitiyType type;
+        std::shared_ptr<entity::AEntity> entity;
+    };
 
     sf::RenderWindow _window;
     Config _config;
-    std::multimap<Entitiy, std::shared_ptr<entity::AEntity>> _entities;
+    std::vector<Entity> _entities;
     std::size_t _currentFrame;
 
+    std::shared_ptr<entity::AEntity> findEntityByType(const std::vector<Entity>& entities, EntitiyType targetType);
 };
 
 } /* namespace game */

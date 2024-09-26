@@ -71,9 +71,7 @@ int64_t PipePair::getUpperPipeY() {
 }
 
 bool PipePair::checkCollision(std::shared_ptr<entity::AEntity> other) const {
-    _lowerPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
-    _upperPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
-    return true;
+    return _lowerPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds()) || _upperPipe.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
 }
 
 /**

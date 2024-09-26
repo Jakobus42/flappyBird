@@ -6,12 +6,14 @@
 
 int main() {
     try {
-        game::GameManager game;
-        game.init("config.json");
-        if(game.run()) {
-            return 0;
+        while(true) {
+            game::GameManager game;
+            game.init("config.json");
+            if(game.run()) {
+                return 0;
+            }
+            game.reset();
         }
-        game.reset();
     } catch (std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
