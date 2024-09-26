@@ -11,7 +11,6 @@ _currentFrame(0) {
   if (!_backgroundTexture.loadFromFile("assets/sprites/background-day-wide.png")) {
       throw std::runtime_error("cant load assets/sprites/background-day-wide.png");
   }
-  _window.setFramerateLimit(60);
   _background.setTexture(_backgroundTexture);
   for (std::size_t i = 0; i < 4; ++i) {
     _entities.push_back(std::make_shared<entity::Pipe>(i));
@@ -40,6 +39,11 @@ GameManager::GameManager(const GameManager &) {
  */
 GameManager& GameManager::operator=(const GameManager &) {
     return *this;
+}
+
+void GameManager::init() {
+  _config.loadFromFile("config.json");
+  _window.setFramerateLimit(60);
 }
 
 bool GameManager::run() {
