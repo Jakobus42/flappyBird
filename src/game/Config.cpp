@@ -1,138 +1,152 @@
-#include "../../include/game/Config.hpp"
-#include <nlohmann/json.hpp>
+#include "Config.h"
 #include <fstream>
-#include <stdexcept>
 #include <filesystem>
+#include <stdexcept>
 
 namespace fs = std::filesystem;
 
 namespace game {
 
-/**
- * @brief Constructs a new Config object.
- */
-Config::Config() {}
-
-/**
- * @brief Destroys the Config object.
- */
-Config::~Config() {}
-
-/**
- * @brief Copy constructor.
- * @param other The other Config object to copy.
- */
-Config::Config(const Config &other)
-    : _textures(other._textures), _soundEffects(other._soundEffects), _soundTracks(other._soundTracks) {}
-
-/**
- * @brief Copy assignment operator.
- * @param other The other Config object to assign from.
- * @return A reference to the assigned Config object.
- */
-Config& Config::operator=(const Config &other) {
-    if (this != &other) {
-        _textures = other._textures;
-        _soundEffects = other._soundEffects;
-        _soundTracks = other._soundTracks;
+    float BaseEntityConfig::getVelocity() const {
+        return _velocity;
     }
-    return *this;
-}
 
-void Config::loadIntoMap(const std::string& folder, std::unordered_map<std::string, std::unordered_map<std::string, std::vector<std::string>>>& dst ) {
-    if (!fs::exists(folder)) {
-        throw std::runtime_error("Cant find " + folder);
+    const std::vector<std::string>& BaseEntityConfig::getTexturePaths(const TextureCategory& category) const {
+        static std::vector<std::string> empty;
+        auto it = _textures.find(category);
+        return (it != _textures.end()) ? it->second : empty;
     }
-    for (const auto& entry : fs::recursive_directory_iterator(folder)) {
-        if (fs::is_regular_file(entry)) {
-            std::string fullPath = entry.path().string();
-            std::string category = entry.path().parent_path().parent_path().filename().string();  
-            std::string subcategory = entry.path().parent_path().filename().string();
-            dst[category][subcategory].push_back(fullPath);
+
+    const std::unordered_map<TextureCategory, std::vector<std::string>>& BaseEntityConfig::getTextureCategory(const TextureCategory& category) const {
+        return _textures;
+    }
+
+    float PipeConfig::getSpacing() const {
+        return _spacing;
+    }
+
+    float BirdConfig::getJumpForce() const {
+        return _jumpForce;
+    }
+
+    const std::string& Config::categoryToString(TextureCategory category) const {
+        static const std::unordered_map<TextureCategory, std::string> categoryToStr = {
+            {TextureCategory::Bird, "Bird"},
+            {TextureCategory::Pipe, "Pipe"},
+            {TextureCategory::Background, "Background"},
+            {TextureCategory::Floor, "Floor"},
+            {TextureCategory::Unknown, "Unknown"}
+        };
+
+        auto it = categoryToStr.find(category);
+        if (it != categoryToStr.end()) {
+            return it->second;
         }
+        static std::string unknown = "Unknown";
+        return unknown;
     }
-}
 
-/**
- * @brief Recursively load all textures and sounds from a directory structure.
- * @param rootFolder The base folder to start scanning (e.g., "assets").
- */
-void Config::loadAssets(const std::string &rootFolder) {
-    if (!fs::exists(rootFolder)) {
-        throw std::runtime_error("Root folder does not exist: " + rootFolder);
+    Config::Config() {
     }
-    loadIntoMap(rootFolder + "/textures", _textures);
-    loadIntoMap(rootFolder + "/audio/soundEffects", _soundEffects);
-    std::string soundtrackFolder = rootFolder + "/audio/soundtracks";
-    if (fs::exists(soundtrackFolder)) {
-        for (const auto& entry : fs::directory_iterator(soundtrackFolder)) {
-            if (fs::is_regular_file(entry)) {
-                _soundTracks.push_back(entry.path().string());
+
+    Config::~Config() {
+    }
+
+    Config::Config(const Config &other) 
+        : birdConfig(other.birdConfig), pipeConfig(other.pipeConfig), floorConfig(other.floorConfig),
+          _soundTracks(other._soundTracks), _soundEffects(other._soundEffects) {
+    }
+
+    Config& Config::operator=(const Config &other) {
+        if (this != &other) {
+            birdConfig = other.birdConfig;
+            pipeConfig = other.pipeConfig;
+            floorConfig = other.floorConfig;
+            _soundTracks = other._soundTracks;
+            _soundEffects = other._soundEffects;
+        }
+        return *this;
+    }
+
+    void Config::loadAssets(const std::string& rootFolder) {
+        if (!fs::exists(rootFolder)) {
+            throw std::runtime_error("Root folder does not exist: " + rootFolder);
+        }
+
+        auto loadIntoMap = [](const std::string& folder, std::unordered_map<TextureCategory, std::vector<std::string>>& map) {
+            if (!fs::exists(folder)) {
+                return;
+            }
+            for (const auto& entry : fs::directory_iterator(folder)) {
+                if (!fs::is_directory(entry)) {
+                    
+                }
+                    TextureCategory category = TextureCategory::Unknown;
+                    std::string categoryName = entry.path().filename().string();
+                    if (categoryName == "Bird") category = TextureCategory::Bird;
+                    else if (categoryName == "Pipe") category = TextureCategory::Pipe;
+                    else if (categoryName == "Background") category = TextureCategory::Background;
+                    else if (categoryName == "Floor") category = TextureCategory::Floor;
+
+                    if (category != TextureCategory::Unknown) {
+                        for (const auto& file : fs::directory_iterator(entry)) {
+                            if (fs::is_regular_file(file)) {
+                                map[category].push_back(file.path().string());
+                            }
+                        }
+                    }
+            }
+        };
+
+        loadIntoMap(rootFolder + "/textures", birdConfig._textures);
+        loadIntoMap(rootFolder + "/textures", pipeConfig._textures);
+        loadIntoMap(rootFolder + "/textures", floorConfig._textures);
+
+        std::string soundEffectsFolder = rootFolder + "/audio/soundEffects";
+        if (fs::exists(soundEffectsFolder)) {
+            for (const auto& entry : fs::directory_iterator(soundEffectsFolder)) {
+                if (fs::is_regular_file(entry)) {
+                    std::string filename = entry.path().filename().string();
+                    SoundEffect effect = SoundEffect::Unknown;
+
+                    if (filename.find("die") != std::string::npos) {
+                        effect = SoundEffect::Die;
+                    } else if (filename.find("hit") != std::string::npos) {
+                        effect = SoundEffect::Hit;
+                    } else if (filename.find("point") != std::string::npos) {
+                        effect = SoundEffect::Point;
+                    } else if (filename.find("wing") != std::string::npos) {
+                        effect = SoundEffect::Wing;
+                    }
+
+                    if (effect != SoundEffect::Unknown) {
+                        _soundEffects[effect] = entry.path().string();
+                    }
+                }
+            }
+        }
+
+        std::string soundtrackFolder = rootFolder + "/audio/soundtracks";
+        if (fs::exists(soundtrackFolder)) {
+            for (const auto& entry : fs::directory_iterator(soundtrackFolder)) {
+                if (fs::is_regular_file(entry)) {
+                    _soundTracks.push_back(entry.path().string());
+                }
             }
         }
     }
-}
 
-void loadConfig(const std::string& configFile) {
-    
-}
-
-const std::unordered_map<std::string, std::vector<std::string>>& Config::getTextureCategory(const std::string& category) const {
-    auto it = _textures.find(category);
-    if (it != _textures.end()) {
-        return it->second;
+    void Config::loadConfig(const std::string& configFile) {
     }
-    throw std::runtime_error("Can't find " + category);
-}
 
-const std::unordered_map<std::string, std::vector<std::string>>& Config::getSoundEffectCategory(const std::string& category) const {
-    auto it = _soundEffects.find(category);
-    if (it != _soundEffects.end()) {
-        return it->second;
+    const std::vector<std::string>& Config::getSoundtrackPaths() const {
+        return _soundTracks;
     }
-    throw std::runtime_error("Can't find " + category);
-}
 
-/**
- * @brief Gets the texture paths for a specific category and subcategory (e.g., "BIRD", "BIRD1").
- * @param category The texture category (e.g., "BIRD").
- * @param subcategory The subcategory (e.g., "BIRD1").
- * @return A vector of file paths for the textures.
- */
-const std::vector<std::string>& Config::getTexturePaths(const std::string& category, const std::string& subcategory) const {
-    auto categoryIt = _textures.find(category);
-    if (categoryIt != _textures.end()) {
-        auto subcategoryIt = categoryIt->second.find(subcategory);
-        if (subcategoryIt != categoryIt->second.end()) {
-            return subcategoryIt->second;
-        }
+    const std::vector<std::string>& Config::getSoundEffectPaths(const SoundEffect& effect) const {
+        static std::vector<std::string> empty;
+        auto it = _soundEffects.find(effect);
+        return (it != _soundEffects.end()) ? std::vector<std::string>{it->second} : empty;
     }
-    throw std::runtime_error("Can't find " + category + " " + subcategory);
-}
 
-/**
- * @brief Gets the sound effect paths for a specific category and subcategory (e.g., "actions", "flap").
- * @param category The sound effect category (e.g., "actions").
- * @param subcategory The subcategory (e.g., "flap").
- * @return A vector of file paths for the sound effects.
- */
-const std::vector<std::string>& Config::getSoundEffectPaths(const std::string& category, const std::string& subcategory) const {
-    auto categoryIt = _soundEffects.find(category);
-    if (categoryIt != _soundEffects.end()) {
-        auto subcategoryIt = categoryIt->second.find(subcategory);
-        if (subcategoryIt != categoryIt->second.end()) {
-            return subcategoryIt->second;
-        }
-    }
-    throw std::runtime_error("Can't find " + category + " " + subcategory);
-}
-
-/**
- * @brief Gets the list of soundtrack paths.
- * @return A vector of file paths for the soundtracks.
- */
-const std::vector<std::string>& Config::getSoundtrackPaths() const {
-    return _soundTracks;
-}
-
-} /* namespace game */
+} // namespace game

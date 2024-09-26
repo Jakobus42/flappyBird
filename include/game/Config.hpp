@@ -7,20 +7,19 @@
 
 namespace game {
 
-enum class Category {
-    Texture,
-    SoundEffect,
-    Soundtrack,
+enum class TextureCategory {
+    Bird,
+    Pipe,
+    Background,
+    Floor,
     Unknown
 };
 
-enum class SubCategory {
-    Bird,
-    Pipe,
-    Floor,
-    Jump,
+enum class SoundEffect {
+    Die,
     Hit,
-    Background,
+    Point,
+    Wing,
     Unknown
 };
 
@@ -30,25 +29,25 @@ class BaseEntityConfig {
 
         float getVelocity() const;
 
-        const std::vector<std::string>& getTexturePaths(const std::string& subCetegory) const;
-        const std::unordered_map<std::string, std::vector<std::string>>& getTextureCategory(const std::string& cetegory) const;
+        const std::vector<std::string>& getTexturePaths(const TextureCategory& category) const;
+        const std::unordered_map<TextureCategory, std::vector<std::string>>& getTextureCategory(const TextureCategory& category) const;
     protected:
         float _velocity = 0.0f;
-        std::unordered_map<std::string, std::vector<std::string>> textures;
+        std::unordered_map<TextureCategory, std::vector<std::string>> _textures;
 };
 
 class PipeConfig : public BaseEntityConfig {
     public:
         float getSpacing() const;
     private:
-        float _spacing;
+        float _spacing = 0.0f;
 };
 
 class BirdConfig : public BaseEntityConfig {
     public:
         float getJumpForce() const;
     private:
-        float _jumpForce;
+        float _jumpForce = 0.0f;  
 };
 
 /**
@@ -66,18 +65,16 @@ class Config {
         void loadConfig(const std::string& configFile);
 
         const std::vector<std::string>& getSoundtrackPaths() const;
-        const std::vector<std::string>& getSoundEffectPaths(const std::string& category) const;
+        const std::vector<std::string>& getSoundEffectPaths(const SoundEffect& effect) const;
     private:
         BirdConfig birdConfig;
         PipeConfig pipeConfig;
         BaseEntityConfig floorConfig;
 
         std::vector<std::string> _soundTracks;
-        std::unordered_map<std::string, std::string> _soundEffects;
-        void loadIntoMap(const std::string& folder, std::unordered_map<std::string, std::vector<std::string>& dst);
+        std::unordered_map<SoundEffect, std::string> _soundEffects;
 
-        const std::string& categoryToString(Category category) const;
-        const std::string& subCetegotyToString(SubCategory subCategory) const;
+        const std::string& categoryToString(TextureCategory category) const;
 };
 
 } /* namespace game */
