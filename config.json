@@ -1,0 +1,29 @@
+{
+    "birdConfig": {
+        "velocity": 5.0,
+        "jumpForce": 10.0,
+        "textures": {
+            "Bird": ["bird1.png", "bird2.png"],
+            "Bird2": ["bird3.png", "bird4.png"]
+        }
+    },
+    "pipeConfig": {
+        "velocity": 2.5,
+        "spacing": 1.0,
+        "textures": {
+            "Pipe": ["pipe1.png", "pipe2.png"]
+        }
+    },
+    "floorConfig": {
+        "velocity": 1.5,
+        "textures": {
+            "Floor": ["floor1.png", "floor2.png"]
+        }
+    },
+    "backgroundConfig": {
+        "velocity": 0.8,
+        "textures": {
+            "Background": ["background1.png", "background2.png"]
+        }
+    }
+}

@@ -1,80 +1,54 @@
 #pragma once
 
-#include <iostream>
-#include <unordered_map>
-#include <vector>
 #include <string>
+#include <vector>
+#include <map>
+#include <nlohmann/json.hpp>
 
 namespace game {
 
-enum class TextureCategory {
-    Bird,
-    Pipe,
-    Background,
-    Floor,
-    Unknown
-};
-
-enum class SoundEffect {
-    Die,
-    Hit,
-    Point,
-    Wing,
-    Unknown
-};
-
-class BaseEntityConfig {
-    public:
-        virtual ~BaseEntityConfig() = default;
-
-        float getVelocity() const;
-
-        const std::vector<std::string>& getTexturePaths(const TextureCategory& category) const;
-        const std::unordered_map<TextureCategory, std::vector<std::string>>& getTextureCategory(const TextureCategory& category) const;
-    protected:
-        float _velocity = 0.0f;
-        std::unordered_map<TextureCategory, std::vector<std::string>> _textures;
-};
-
-class PipeConfig : public BaseEntityConfig {
-    public:
-        float getSpacing() const;
-    private:
-        float _spacing = 0.0f;
-};
-
-class BirdConfig : public BaseEntityConfig {
-    public:
-        float getJumpForce() const;
-    private:
-        float _jumpForce = 0.0f;  
-};
-
-/**
- * @class Config
- * @brief Stores paths for textures, sound effects, and soundtracks.
- */
 class Config {
-    public:
-        Config();
-        ~Config();
-        Config(const Config &other);
-        Config& operator=(const Config &other);
+public:
+    struct TextureConfig {
+        std::vector<std::string> textures;
+    };
 
-        void loadAssets(const std::string& rootFolder);
-        void loadConfig(const std::string& configFile);
+    struct BirdConfig {
+        float velocity;
+        float jumpForce;
+        std::map<std::string, TextureConfig> textures;
+    };
 
-        const std::vector<std::string>& getSoundtrackPaths() const;
-        const std::vector<std::string>& getSoundEffectPaths(const SoundEffect& effect) const;
-    private:
-        BirdConfig birdConfig;
-        PipeConfig pipeConfig;
-        BaseEntityConfig floorConfig;
+    struct PipeConfig {
+        float velocity;
+        float spacing;
+        std::map<std::string, TextureConfig> textures;
+    };
 
-        std::vector<std::string> _soundTracks;
-        std::unordered_map<SoundEffect, std::string> _soundEffects;
+    struct FloorConfig {
+        float velocity;
+        std::map<std::string, TextureConfig> textures;
+    };
 
-        const std::string& categoryToString(TextureCategory category) const;
+    struct BackgroundConfig {
+        float velocity;
+        std::map<std::string, TextureConfig> textures;
+    };
+
+    void loadFromFile(const std::string &filename);
+
+    const BirdConfig& getBirdConfig() const;
+    const PipeConfig& getPipeConfig() const;
+    const FloorConfig& getFloorConfig() const;
+    const BackgroundConfig& getBackgroundConfig() const;
+
+private:
+    BirdConfig _birdConfig;
+    PipeConfig _pipeConfig;
+    FloorConfig _floorConfig;
+    BackgroundConfig _backgroundConfig;
+
+    void loadTextureConfig(const nlohmann::json& json, std::map<std::string, TextureConfig>& textures);
 };
 
-} /* namespace game */
+} // namespace game
