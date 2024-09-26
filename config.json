@@ -9,7 +9,7 @@
     },
     "pipeConfig": {
         "velocity": 2.5,
-        "spacing": 1.0,
+        "spacing": 692.0,
         "textures": {
             "Pipe": ["pipe1.png", "pipe2.png"]
         }

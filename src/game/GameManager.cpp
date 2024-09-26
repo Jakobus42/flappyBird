@@ -57,16 +57,16 @@ bool GameManager::run() {
           }
         }
     }
-    for (auto it = _entities.begin(); it != _entities.end() - 1; ++it) {
-      if(_entities.back()->checkCollision((*it))) {
-        return 0;
-      }
-      if (auto pipe = std::dynamic_pointer_cast<entity::Pipe>(*it)) {
-          if(pipe->checkCollision(_entities.back())) {
-            return 0;
-          }
-      }
-    }
+    // for (auto it = _entities.begin(); it != _entities.end() - 1; ++it) {
+    //   if(_entities.back()->checkCollision((*it))) {
+    //     return 0;
+    //   }
+    //   if (auto pipe = std::dynamic_pointer_cast<entity::Pipe>(*it)) {
+    //       if(pipe->checkCollision(_entities.back())) {
+    //         return 0;
+    //       }
+    //   }
+    // }
     _window.draw(_background);
     for(auto it = _entities.begin(); it != _entities.end(); ++it) {
       (*it)->move(_currentFrame);

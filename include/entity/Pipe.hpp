@@ -13,7 +13,7 @@ namespace entity {
  */
 class Pipe: public AEntity {
     public:
-        Pipe(std::size_t id);
+        Pipe(std::size_t id, bool isUpper, std::size_t velocity, std::size_t spacing, std::size_t gap, const std::vector<std::string>& texturePaths);
         ~Pipe();
         Pipe(const Pipe &other);
         Pipe& operator=(const Pipe &other);
@@ -21,13 +21,17 @@ class Pipe: public AEntity {
         bool move(std::size_t currentFrame);
         void draw(sf::RenderWindow& window, std::size_t currentFrame);
         bool checkCollision(std::shared_ptr<entity::AEntity> other) const;
-
-        static int64_t getRandomY();
     private:
-        bool isUpper;
+        static std::size_t getLowerPipeY();
+        static std::size_t Pipe::getUpperPipeY();
+        
+        bool _isUpper;
         sf::Sprite _secondPipe;
         std::size_t _id;
         std::size_t _y;
+        std::size_t _gap;
+        std::size_t _spacing;
+
 };
 
 } /* namespace entity */

@@ -50,6 +50,7 @@ bool Floor::move(std::size_t) {
 }
 
 void Floor::draw(sf::RenderWindow& window, std::size_t currentFrame) {
+    switchToNextTexture(3, currentFrame)
     window.draw(_sprite);
 }
 
