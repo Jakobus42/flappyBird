@@ -114,7 +114,7 @@ create_class() {
 	local processed_source=$(echo "${source_template}" | sed -e "s/%CLASS_NAME%/${class_name}/g" -e "s/%SUB_FOLDER%/${subfolder}/g" -e "s/%NAMESPACE%/${namespace}/g")
 	local processed_test=$(echo "${test_template}" | sed -e "s/%CLASS_NAME%/${class_name}/g" -e "s/%SUB_FOLDER%/${subfolder}/g" -e "s/%NAMESPACE%/${namespace}/g")
 
-	mkdir -p "include/${subfolder}" "src/${subfolder}" "tests/${subfolder}" || {
+	mkdir -p "include/${subfolder}" "src/${subfolder}" || {
 		echo "Failed to create directories"
 		exit 1
 	}

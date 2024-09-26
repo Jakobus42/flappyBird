@@ -14,9 +14,11 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(flappyBird src/main.cpp src/entity/Bird.cpp src/entity/AEntity.cpp src/entity/Pipe.cpp src/entity/Floor.cpp src/game/GameManager.cpp)
+add_executable(flappyBird src/main.cpp src/entity/Bird.cpp src/entity/AEntity.cpp src/entity/Pipe.cpp src/entity/Floor.cpp src/game/GameManager.cpp src/game/Config.cpp)
 target_link_libraries(flappyBird PRIVATE sfml-graphics)
 target_compile_features(flappyBird PRIVATE cxx_std_17)
+find_package(nlohmann_json 3.2.0 REQUIRED)
+target_link_libraries(flappyBird PRIVATE nlohmann_json::nlohmann_json)
 
 if(WIN32)
     add_custom_command(
