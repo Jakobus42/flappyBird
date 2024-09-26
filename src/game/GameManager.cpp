@@ -44,7 +44,7 @@ void GameManager::init(const std::string& configPath) {
     const auto& pipeConfig = _config.getPipeConfig();
     for (std::size_t i = 0; i < 4; ++i) {
         _entities.push_back(
-            std::make_shared<entity::PipePair>(i, i % 2, pipeConfig.velocity, pipeConfig.spacing, 640, pipeConfig.textures.at("default"))); // TODO load gap in config
+            std::make_shared<entity::PipePair>(pipeConfig.spacing, pipeConfig.velocity, 640, pipeConfig.textures.at("default"))); // TODO load gap in config
     }
     const auto& birdConfig = _config.getBirdConfig();
     auto birdy = std::make_shared<entity::Bird>(

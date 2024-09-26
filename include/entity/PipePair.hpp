@@ -1,35 +1,32 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-#include <SFML/Graphics.hpp>
-#include "Pipe.hpp"
+#include "../game/GameManager.hpp"
+#include "AEntity.hpp"
 
 namespace entity {
 
 /**
- * @brief A class representing a pair of pipes (upper and lower) that move together.
- * The upper and lower pipes share the same x-coordinate but have different y-coordinates,
- * with a gap in between them.
+ * @class PipePair
+ * @brief Represents a pair of pipes (upper and lower) that move together.
  */
-class PipePair {
-public:
-    PipePair(std::size_t id, std::size_t velocity, std::size_t spacing, std::size_t gap, 
-             const std::vector<std::string>& texturePaths);
+class PipePair : public AEntity {
+   public:
+    PipePair(float velocity, std::size_t spacing, std::size_t gap, const std::vector<std::string>& texturePaths);
     ~PipePair();
+    PipePair(const PipePair& other);
+    PipePair& operator=(const PipePair& other);
 
-    bool move();
+    bool move(); 
     void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
-private:
-    std::size_t _id;
-    std::size_t _velocity;    
-    std::size_t _spacing;              
-    std::size_t _gap;                  
-    
-    Pipe _upperPipe;  
-    Pipe _lowerPipe; 
+   private:
+    std::size_t getRandomY(); 
+    std::size_t getUpperPipeY(); 
+
+    sf::Sprite _lowerPipe;       
+    sf::Sprite _upperPipe;       
+    std::size_t _gap;
+    std::size_t _randomY;     
 };
 
-} // namespace entity
-
+}  // namespace entity
