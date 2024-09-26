@@ -19,7 +19,7 @@ PipePair::PipePair(std::size_t id, float velocity, std::size_t spacing, std::siz
     _upperPipe.setScale(3, 3);
     _upperPipe.setRotation(180);
     _lowerPipe.setPosition(SCREEN_WIDTH + (_id * _spacing), _randomY); //TODO dont hardcode
-    _upperPipe.setPosition(SCREEN_WIDTH + (_id * _spacing), getUpperPipeY());
+    _upperPipe.setPosition(SCREEN_WIDTH + (_id * _spacing + _upperPipe.getGlobalBounds().width), getUpperPipeY());
 }
 
 /**
@@ -83,7 +83,7 @@ bool PipePair::move() {
     _upperPipe.move(-_velocity, 0);
     if (_lowerPipe.getPosition().x < - _lowerPipe.getGlobalBounds().width) {
          _lowerPipe.setPosition(SCREEN_WIDTH + _spacing, _randomY);
-         _upperPipe.setPosition(SCREEN_WIDTH + _spacing, getUpperPipeY());
+         _upperPipe.setPosition(SCREEN_WIDTH + _spacing + _upperPipe.getGlobalBounds().width, getUpperPipeY());
     }
     return false;
 }
