@@ -7,16 +7,9 @@ namespace entity {
  */
 
 
-Floor::Floor(std::size_t id):
-AEntity(),
-_velocity(-10.0f),
-_id(id),
-_currentTexture(0) {
-    std::vector<std::string> texturePaths = {
-        "assets/sprites/base_wide_only.png"
-    };
-    setTextures(texturePaths);
-     _sprite.setTexture(_textures[_currentTexture]);
+Floor::Floor(std::size_t id, std::size_t velocity, const std::vector<std::string>& texturePaths):
+AEntity(velocity, texturePaths),
+_id(id) {
     _sprite.setPosition(_sprite.getGlobalBounds().width * _id, SCREEN_HEIGHT - _sprite.getGlobalBounds().height);
 }
 
@@ -51,7 +44,7 @@ Floor& Floor::operator=(const Floor& other) {
 bool Floor::move(std::size_t) {
     _sprite.move(_velocity, 0);
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
-        _sprite.setPosition(_sprite.getPosition().x + _sprite.getGlobalBounds().width * 4, _sprite.getPosition().y);
+        _sprite.setPosition(_sprite.getPosition().x + _sprite.getGlobalBounds().width * 4, _sprite.getPosition().y); //TODO HARDCODED
     }
     return 0;
 }

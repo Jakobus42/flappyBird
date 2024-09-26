@@ -24,9 +24,8 @@ class Pipe: public AEntity {
 
         static int64_t getRandomY();
     private:
-        std::size_t _currentTexture;
+        bool isUpper;
         sf::Sprite _secondPipe;
-        float _velocity;
         std::size_t _id;
         std::size_t _y;
 };

@@ -9,7 +9,7 @@ namespace entity {
  */
 class Bird: public AEntity {
     public:
-        Bird(std::size_t x, std::size_t y);
+        Bird::Bird(std::size_t x, std::size_t y, const std::vector<std::string>& texturePaths, std::size_t velocity, std::size_t jumpForce);
         ~Bird();
         Bird(const Bird &other);
         Bird& operator=(const Bird &other);
@@ -19,8 +19,7 @@ class Bird: public AEntity {
 
         bool jump(std::size_t currentFrame);
     private:
-        std::size_t _currentTexture;
-        float _velocity;
+        const std::size_t _jumpForce;
 };
 
 } /* namespace entity */

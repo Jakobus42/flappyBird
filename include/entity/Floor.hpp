@@ -13,7 +13,7 @@ namespace entity {
  */
 class Floor: public AEntity {
     public:
-        Floor(std::size_t id);
+        Floor(std::size_t id, std::size_t velocity, const std::vector<std::string>& texturePaths);
         ~Floor();
         Floor(const Floor &other);
         Floor& operator=(const Floor &other);
@@ -22,8 +22,6 @@ class Floor: public AEntity {
         void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
     private:
-        std::size_t _currentTexture;
-        float _velocity;
         std::size_t _id;
 };
 
