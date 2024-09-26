@@ -21,7 +21,7 @@ class AEntity {
     const std::vector<sf::Texture>& getTexture() const;
     const sf::Sprite& getSprite() const;
 
-    virtual bool move(float maximumX) = 0;
+    virtual bool move() = 0;
     virtual void draw(sf::RenderWindow& window, std::size_t currentFrame) = 0;
     virtual bool checkCollision(std::shared_ptr<entity::AEntity> other) const;
 

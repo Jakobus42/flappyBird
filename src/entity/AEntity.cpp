@@ -73,8 +73,8 @@ void AEntity::setTextures(const std::vector<std::string>& texturePaths) {
 void AEntity::switchToNextTexture(std::size_t frameDelay, std::size_t currentFrame) {
     if (!_textures.empty()) {
         if (currentFrame % frameDelay == 0) {
-            _currentTexture = (_currentTexture + 1);
-            if (_currentTexture > _textures.size()) {
+            _currentTexture++;
+            if (_currentTexture >= _textures.size()) {
                 _currentTexture = 0;
             }
             _sprite.setTexture(_textures[_currentTexture]);

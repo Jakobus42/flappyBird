@@ -19,7 +19,7 @@ class Floor : public AEntity {
     Floor(const Floor& other);
     Floor& operator=(const Floor& other);
 
-    bool move(float maximumX);
+    bool move();
     void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
    private:

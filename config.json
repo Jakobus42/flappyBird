@@ -3,27 +3,26 @@
         "velocity": 5.0,
         "jumpForce": 10.0,
         "textures": {
-            "default": ["bird1.png", "bird2.png"],
-            "Bird2": ["bird3.png", "bird4.png"]
+            "default": ["assets/textures/bird/normalBird/yellowbird-downflap.png", "assets/textures/bird/normalBird/yellowbird-midflap.png", "assets/textures/bird/normalBird/yellowbird-upflap.png"]
         }
     },
     "pipeConfig": {
         "velocity": 2.5,
         "spacing": 692.0,
         "textures": {
-            "default": ["pipe1.png", "pipe2.png"]
+            "default": ["assets/textures/pipe/normalPipe/pipe-green.png"]
         }
     },
     "floorConfig": {
         "velocity": 1.5,
         "textures": {
-            "default": ["floor1.png", "floor2.png"]
+            "default": ["assets/textures/floor/normalFloor/base_wide_only.png"]
         }
     },
     "backgroundConfig": {
         "velocity": 0.8,
         "textures": {
-            "default": ["background1.png", "background2.png"]
+            "default": ["assets/textures/background/normalBackground/background-day-wide.png"]
         }
     }
 }

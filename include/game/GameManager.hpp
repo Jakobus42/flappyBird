@@ -9,6 +9,7 @@
 #include "../entity/Bird.hpp"
 #include "../entity/Floor.hpp"
 #include "../entity/Pipe.hpp"
+#include "../entity/PipePair.hpp"
 #include "../game/Config.hpp"
 
 namespace game {

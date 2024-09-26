@@ -14,7 +14,7 @@ Pipe::Pipe(std::size_t id, bool isUpper, std::size_t velocity, std::size_t spaci
       _y(_isUpper ? getUpperPipeY() : getLowerPipeY()),
       _spacing(spacing) {
     _sprite.setScale(3, 3);
-    _sprite.setPosition(SCREEN_WIDTH + (_id * _spacing), _y);
+    _sprite.setPosition(SCREEN_WIDTH + (_id * _spacing), _y); //TODO dont hardcode
     if (_isUpper) {
         _sprite.setRotation(180);
     }
@@ -67,18 +67,16 @@ std::size_t Pipe::getUpperPipeY() {
     return getLowerPipeY() - _gap - _sprite.getGlobalBounds().height;
 }
 
-bool Pipe::move(float maxXPosition) {
-    _sprite.move(_velocity, 0);
+bool Pipe::move() {
+    _sprite.move(-_velocity, 0);
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
         _y = _isUpper ? getUpperPipeY() : getLowerPipeY();
-        _sprite.setPosition(maxXPosition + _sprite.getGlobalBounds().width,
-                            _sprite.getPosition().y);
+        _sprite.setPosition(SCREEN_WIDTH + _spacing, _y);
     }
     return false;
 }
 
 void Pipe::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    switchToNextTexture(3, currentFrame);
     window.draw(_sprite);
 }
 

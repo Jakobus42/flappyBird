@@ -44,10 +44,16 @@ void GameManager::init(const std::string& configPath) {
     const auto& pipeConfig = _config.getPipeConfig();
     for (std::size_t i = 0; i < 4; ++i) {
         _entities.push_back(
-            std::make_shared<entity::Pipe>(i, i % 2, pipeConfig.velocity, pipeConfig.spacing, 640 ,pipeConfig.textures.at("default"))); // TODO load gap in config
+            std::make_shared<entity::PipePair>(i, i % 2, pipeConfig.velocity, pipeConfig.spacing, 640, pipeConfig.textures.at("default"))); // TODO load gap in config
     }
-    // const auto& birdConfig = _config.getBirdConfig();
-    // _entities.push_back(std::make_shared<entity::Bird>(_window.getSize().x / 3, _window.getSize().y / 2, birdConfig.textures.at("default"), birdConfig.velocity, birdConfig.jumpForce))
+    const auto& birdConfig = _config.getBirdConfig();
+    auto birdy = std::make_shared<entity::Bird>(
+        _window.getSize().x / 3, 
+        _window.getSize().y / 2, 
+        birdConfig.textures.at("default"), 
+        birdConfig.velocity, 
+        birdConfig.jumpForce);
+    _entities.push_back(birdy);
 }
 
 template <typename T>
@@ -77,12 +83,12 @@ bool GameManager::run() {
         }
         _window.clear();
         for (const auto& entity : _entities) {
-            if (std::dynamic_pointer_cast<entity::Pipe>(entity) || std::dynamic_pointer_cast<entity::Floor>(entity)) {
+            if (std::dynamic_pointer_cast<entity::PipePair>(entity) || std::dynamic_pointer_cast<entity::Floor>(entity)) {
                 if (bird->checkCollision(entity)) {
                     return 0;
                 }
             }
-            entity->move(_currentFrame);
+            entity->move();
             entity->draw(_window, _currentFrame);
         }
         _window.display();

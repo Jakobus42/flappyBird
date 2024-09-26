@@ -19,7 +19,7 @@ class Background : public AEntity {
     Background(const Background& other);
     Background& operator=(const Background& other);
 
-    bool move(float maximumX);
+    bool move();
     void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
    private:

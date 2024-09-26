@@ -42,7 +42,7 @@ bool Bird::jump(std::size_t currentFrame) {
     return 0;
 }
 
-bool Bird::move(std::size_t) {
+bool Bird::move() {
     _velocity += 0.65f;
     _sprite.move(0, _velocity);
     return 0;

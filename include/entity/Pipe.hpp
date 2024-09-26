@@ -20,7 +20,7 @@ class Pipe : public AEntity {
     Pipe(const Pipe& other);
     Pipe& operator=(const Pipe& other);
 
-    bool move(float maximumX);
+    bool move();
     void draw(sf::RenderWindow& window, std::size_t currentFrame);
 
    private:
@@ -28,7 +28,6 @@ class Pipe : public AEntity {
     std::size_t getUpperPipeY();
 
     bool _isUpper;
-    sf::Sprite _secondPipe;
     std::size_t _id;
     std::size_t _y;
     std::size_t _gap;

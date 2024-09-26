@@ -37,17 +37,15 @@ Floor& Floor::operator=(const Floor& other) {
     return *this;
 }
 
-bool Floor::move(float maxXPosition) {
+bool Floor::move() {
     _sprite.move(_velocity, 0);
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
-        _sprite.setPosition(maxXPosition + _sprite.getGlobalBounds().width,
-                            _sprite.getPosition().y);
+        _sprite.setPosition(_sprite.getGlobalBounds().width, _sprite.getPosition().y);
     }
     return false;
 }
 
 void Floor::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    switchToNextTexture(3, currentFrame);
     window.draw(_sprite);
 }
 
