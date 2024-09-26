@@ -1,11 +1,13 @@
-#include <fstream>
 #include "../../include/game/Config.hpp"
+
+#include <fstream>
 
 using json = nlohmann::json;
 
 namespace game {
 
-void Config::loadTextureConfig(const json& jsonObject, std::map<std::string, std::vector<std::string>>& textures) {
+void Config::loadTextureConfig(const json& jsonObject,
+                               std::map<std::string, std::vector<std::string>>& textures) {
     for (auto& [key, value] : jsonObject.items()) {
         std::vector<std::string> textureConfig;
         for (const auto& texture : value) {
@@ -15,7 +17,7 @@ void Config::loadTextureConfig(const json& jsonObject, std::map<std::string, std
     }
 }
 
-void Config::loadFromFile(const std::string &filename) {
+void Config::loadFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Could not open file: " + filename);
@@ -38,20 +40,12 @@ void Config::loadFromFile(const std::string &filename) {
     loadTextureConfig(configJson["backgroundConfig"]["textures"], _backgroundConfig.textures);
 }
 
-const Config::BirdConfig& Config::getBirdConfig() const {
-    return _birdConfig;
-}
+const Config::BirdConfig& Config::getBirdConfig() const { return _birdConfig; }
 
-const Config::PipeConfig& Config::getPipeConfig() const {
-    return _pipeConfig;
-}
+const Config::PipeConfig& Config::getPipeConfig() const { return _pipeConfig; }
 
-const Config::FloorConfig& Config::getFloorConfig() const {
-    return _floorConfig;
-}
+const Config::FloorConfig& Config::getFloorConfig() const { return _floorConfig; }
 
-const Config::BackgroundConfig& Config::getBackgroundConfig() const {
-    return _backgroundConfig;
-}
+const Config::BackgroundConfig& Config::getBackgroundConfig() const { return _backgroundConfig; }
 
-} // namespcae game
+}  // namespace game

@@ -5,9 +5,9 @@ namespace entity {
 /**
  * @brief Constructs a new Bird object.
  */
-Bird::Bird(std::size_t x, std::size_t y, const std::vector<std::string>& texturePaths, std::size_t velocity, std::size_t jumpForce): 
-AEntity(velocity, texturePaths),
-_jumpForce(jumpForce) {
+Bird::Bird(std::size_t x, std::size_t y, const std::vector<std::string>& texturePaths,
+           std::size_t velocity, std::size_t jumpForce)
+    : AEntity(velocity, texturePaths), _jumpForce(jumpForce) {
     _sprite.setScale(3, 3);
     _sprite.setPosition(x, y - (_textures[_currentTexture].getSize().y * _sprite.getScale().y) / 2);
 }
@@ -21,9 +21,7 @@ Bird::~Bird() {}
  * @brief Copy constructor.
  * @param other The other Bird object to copy.
  */
-Bird::Bird(const Bird& other): 
-AEntity(other),
-_jumpForce(other._jumpForce) {}
+Bird::Bird(const Bird& other) : AEntity(other), _jumpForce(other._jumpForce) {}
 
 /**
  * @brief Copy assignment operator.
@@ -52,7 +50,7 @@ bool Bird::move(std::size_t) {
 
 void Bird::draw(sf::RenderWindow& window, std::size_t currentFrame) {
     switchToNextTexture(3, currentFrame);
-    if(_velocity < 0) {
+    if (_velocity < 0) {
         _sprite.setRotation(_velocity);
     } else {
         _sprite.setRotation(_velocity * 2);

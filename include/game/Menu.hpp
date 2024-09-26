@@ -7,14 +7,13 @@ namespace game {
  * @brief ...
  */
 class Menu {
-    public:
-        Menu();
-        ~Menu();
-        Menu(const Menu &other);
-        Menu& operator=(const Menu &other);
+   public:
+    Menu();
+    ~Menu();
+    Menu(const Menu &other);
+    Menu &operator=(const Menu &other);
 
-    private:
-
+   private:
 };
 
 } /* namespace game */

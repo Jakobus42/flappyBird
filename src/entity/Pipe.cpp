@@ -5,13 +5,14 @@ namespace entity {
 /**
  * @brief Constructs a new Pipe object.
  */
-Pipe::Pipe(std::size_t id, bool isUpper, std::size_t velocity, std::size_t spacing, std::size_t gap, const std::vector<std::string>& texturePaths):
-AEntity(velocity, texturePaths),
-_id(id),
-_gap(gap),
-_isUpper(_isUpper),
-_y(_isUpper ? getUpperPipeY() : getLowerPipeY()),
-_spacing(spacing) {
+Pipe::Pipe(std::size_t id, bool isUpper, std::size_t velocity, std::size_t spacing, std::size_t gap,
+           const std::vector<std::string>& texturePaths)
+    : AEntity(velocity, texturePaths),
+      _id(id),
+      _gap(gap),
+      _isUpper(isUpper),
+      _y(_isUpper ? getUpperPipeY() : getLowerPipeY()),
+      _spacing(spacing) {
     _sprite.setScale(3, 3);
     _sprite.setPosition(SCREEN_WIDTH + (_id * _spacing), _y);
     if (_isUpper) {
@@ -28,10 +29,7 @@ Pipe::~Pipe() {}
  * @brief Copy constructor.
  * @param other The other Pipe object to copy.
  */
-Pipe::Pipe(const Pipe& other): 
-AEntity(other) {
-    *this = other;
-}
+Pipe::Pipe(const Pipe& other) : AEntity(other) { *this = other; }
 
 /**
  * @brief Copy assignment operator.
@@ -44,7 +42,7 @@ Pipe& Pipe::operator=(const Pipe& other) {
         _id = other._id;
         _velocity = other._velocity;
         _currentTexture = other._currentTexture;
-        _isUpper = other._isUpper; 
+        _isUpper = other._isUpper;
     }
     return *this;
 }
@@ -54,9 +52,10 @@ Pipe& Pipe::operator=(const Pipe& other) {
  * @return The Y position.
  */
 std::size_t Pipe::getLowerPipeY() {
-    std::random_device rd; 
+    std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(SCREEN_HEIGHT - SCREEN_HEIGHT / 1.5, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
+    std::uniform_int_distribution<> dist(SCREEN_HEIGHT - SCREEN_HEIGHT / 1.5,
+                                         SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
     return dist(gen);
 }
 
@@ -68,23 +67,19 @@ std::size_t Pipe::getUpperPipeY() {
     return getLowerPipeY() - _gap - _sprite.getGlobalBounds().height;
 }
 
-bool Pipe::move(std::size_t) {
+bool Pipe::move(float maxXPosition) {
     _sprite.move(_velocity, 0);
-    
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
         _y = _isUpper ? getUpperPipeY() : getLowerPipeY();
-        _sprite.setPosition(SCREEN_WIDTH + _spacing, _y);
+        _sprite.setPosition(maxXPosition + _sprite.getGlobalBounds().width,
+                            _sprite.getPosition().y);
     }
-    return 0;
+    return false;
 }
 
 void Pipe::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    switchToNextTexture(3, currentFrame)
+    switchToNextTexture(3, currentFrame);
     window.draw(_sprite);
-}
-
-bool Pipe::checkCollision(std::shared_ptr<entity::AEntity> other) const {
-    return _sprite.getGlobalBounds().intersects(other->getSprite().getGlobalBounds());
 }
 
 } /* namespace entity */

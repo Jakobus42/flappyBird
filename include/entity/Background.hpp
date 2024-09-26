@@ -9,15 +9,15 @@
 namespace entity {
 
 /**
- * @class Floor
+ * @class Background
  * @brief ...
  */
-class Floor : public AEntity {
+class Background : public AEntity {
    public:
-    Floor(std::size_t id, std::size_t velocity, const std::vector<std::string>& texturePaths);
-    ~Floor();
-    Floor(const Floor& other);
-    Floor& operator=(const Floor& other);
+    Background(std::size_t id, std::size_t velocity, const std::vector<std::string>& texturePaths);
+    ~Background();
+    Background(const Background& other);
+    Background& operator=(const Background& other);
 
     bool move(float maximumX);
     void draw(sf::RenderWindow& window, std::size_t currentFrame);

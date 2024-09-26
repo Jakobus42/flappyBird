@@ -6,11 +6,10 @@ namespace entity {
  * @brief Constructs a new Floor object.
  */
 
-
-Floor::Floor(std::size_t id, std::size_t velocity, const std::vector<std::string>& texturePaths):
-AEntity(velocity, texturePaths),
-_id(id) {
-    _sprite.setPosition(_sprite.getGlobalBounds().width * _id, SCREEN_HEIGHT - _sprite.getGlobalBounds().height);
+Floor::Floor(std::size_t id, std::size_t velocity, const std::vector<std::string>& texturePaths)
+    : AEntity(velocity, texturePaths), _id(id) {
+    _sprite.setPosition(_sprite.getGlobalBounds().width * _id,
+                        SCREEN_HEIGHT - _sprite.getGlobalBounds().height);
 }
 
 /**
@@ -22,10 +21,7 @@ Floor::~Floor() {}
  * @brief Copy constructor.
  * @param other The other Floor object to copy.
  */
-Floor::Floor(const Floor& other): 
-AEntity(other) {
-    *this = other;
-}
+Floor::Floor(const Floor& other) : AEntity(other) { *this = other; }
 
 /**
  * @brief Copy assignment operator.
@@ -41,16 +37,17 @@ Floor& Floor::operator=(const Floor& other) {
     return *this;
 }
 
-bool Floor::move(std::size_t) {
+bool Floor::move(float maxXPosition) {
     _sprite.move(_velocity, 0);
     if (_sprite.getPosition().x < -_sprite.getGlobalBounds().width) {
-        _sprite.setPosition(_sprite.getPosition().x + _sprite.getGlobalBounds().width * 4, _sprite.getPosition().y); //TODO HARDCODED
+        _sprite.setPosition(maxXPosition + _sprite.getGlobalBounds().width,
+                            _sprite.getPosition().y);
     }
-    return 0;
+    return false;
 }
 
 void Floor::draw(sf::RenderWindow& window, std::size_t currentFrame) {
-    switchToNextTexture(3, currentFrame)
+    switchToNextTexture(3, currentFrame);
     window.draw(_sprite);
 }
 
