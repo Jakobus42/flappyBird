@@ -1,30 +1,29 @@
 {
-    "textures": {
-        "BIRD": {
-            "BIRD1": ["assets/textures/bird1_fly1.png", "assets/textures/bird1_fly2.png", "assets/textures/bird1_fly3.png"],
-            "BIRD2": ["assets/textures/bird2_fly1.png", "assets/textures/bird2_fly2.png"]
-        },
-        "PIPE": {
-            "PIPE1": ["assets/textures/pipe1.png", "assets/textures/pipe1_broken.png"],
-            "PIPE2": ["assets/textures/pipe2.png"]
-        },
-        "BACKGROUND": {
-            "DAY": ["assets/textures/background-day.png"],
-            "NIGHT": ["assets/textures/background-night.png"]
+    "birdConfig": {
+        "velocity": 5.0,
+        "jumpForce": 10.0,
+        "textures": {
+            "default": ["assets/textures/bird/normalBird/yellowbird-downflap.png", "assets/textures/bird/normalBird/yellowbird-midflap.png", "assets/textures/bird/normalBird/yellowbird-upflap.png"]
         }
     },
-    "sound_effects": {
-        "actions": {
-            "flap": ["assets/sounds/flap1.wav", "assets/sounds/flap2.wav"],
-            "hit": ["assets/sounds/hit.wav"]
-        },
-        "environment": {
-            "wind": ["assets/sounds/wind1.wav", "assets/sounds/wind2.wav"],
-            "rain": ["assets/sounds/rain.wav"]
+    "pipeConfig": {
+        "velocity": 10.0,
+        "spacing": 692.0,
+        "gap": 350,
+        "textures": {
+            "default": ["assets/textures/pipe/normalPipe/pipe-green.png"]
         }
     },
-    "soundtracks": [
-        "assets/sounds/music1.ogg",
-        "assets/sounds/music2.ogg"
-    ]
+    "floorConfig": {
+        "velocity": 10.0,
+        "textures": {
+            "default": ["assets/textures/floor/normalFloor/base_wide_only.png"]
+        }
+    },
+    "backgroundConfig": {
+        "velocity": 5.0,
+        "textures": {
+            "default": ["assets/textures/background/normalBackground/background-day-wide.png"]
+        }
+    }
 }
