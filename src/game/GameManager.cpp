@@ -9,7 +9,6 @@ GameManager::GameManager()
     : _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}),
      _currentFrame(0),
      _score(0) {
-    _window.setFramerateLimit(60);
 }
 
 /**
@@ -35,6 +34,7 @@ void GameManager::init(const std::string& configPath) {
         throw std::runtime_error("Window cant be opened");
     }
     _config.loadFromFile(configPath);
+    _window.setFramerateLimit(_config.getGeneralConfig().fps);
     const auto& backgroundConfig = _config.getBackgroundConfig();
     for (std::size_t i = 0; i < 2; ++i) {
         _entities.push_back(Entity{EntitiyType::BACKGROUND, std::make_shared<entity::Background>(i, backgroundConfig.velocity, backgroundConfig.textures.at("default"))});
@@ -103,6 +103,8 @@ bool GameManager::run() {
                 if(entity->checkCollision(birdy)) {
                     return 0;
                 }
+            } else if(birdy->getPosition().y <= 0) {
+                return 0;
             }
             if(type == EntitiyType::PIPE && entity->getPosition().x - birdy->getPosition().x <= 5.0f && entity->getPosition().x - birdy->getPosition().x >= 0.f) {
                 _score++;

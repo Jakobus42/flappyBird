@@ -1,4 +1,7 @@
 {
+    "generalConfig": {
+        "fps": 42.0
+    },
     "birdConfig": {
         "velocity": 5.0,
         "jumpForce": 10.0,

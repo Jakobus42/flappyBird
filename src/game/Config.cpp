@@ -26,6 +26,7 @@ void Config::loadFromFile(const std::string& filename) {
     json configJson;
     file >> configJson;
 
+    _generalConfig.fps = configJson["generalConfig"]["fps"];
 
     for (auto& [key, value] : configJson["soundEffectConfig"].items()) {
         _soundEffectConfig[key] = value[0];
@@ -60,5 +61,6 @@ const Config::BackgroundConfig& Config::getBackgroundConfig() const { return _ba
 const std::map<std::string, std::string>& Config::getMusicConfig() const { return _musicConfig; }
 
 const std::map<std::string, std::string>& Config::getSoundEffectConfig() const { return _soundEffectConfig; }
+const Config::GeneralConfig& Config::getGeneralConfig() const { return _generalConfig; }
 
 }  // namespace game
