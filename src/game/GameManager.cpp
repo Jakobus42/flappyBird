@@ -66,9 +66,16 @@ std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector
 
 bool GameManager::run() {
     sf::Music music; //TODO extract into SoundManager later
+    sf::SoundBuffer flapSound;
+    sf::SoundBuffer hitSound;
+    sf::Sound sound;
     music.setVolume(1);
     if (!music.openFromFile(_config.getMusicConfig().at("default")))
         throw std::runtime_error("cant open " + _config.getMusicConfig().at("default"));
+    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().at("flap")))
+        throw std::runtime_error("cant open " + _config.getMusicConfig().at("flap"));
+    if (!hitSound.loadFromFile(_config.getSoundEffectConfig().at("hit")))
+        throw std::runtime_error("cant open " + _config.getMusicConfig().at("hit"));
     music.play();
     auto birdy = findEntityByType(_entities, EntitiyType::BIRD);
     while (_window.isOpen()) {
@@ -82,7 +89,8 @@ bool GameManager::run() {
                 auto bird = std::dynamic_pointer_cast<entity::Bird>(birdy);
                 if (bird) {
                     bird->jump(_currentFrame);
-                    // play sound
+                    sound.setBuffer(flapSound);
+                    sound.play();
                 }
             }
         }
@@ -90,7 +98,8 @@ bool GameManager::run() {
         for (const auto& [type, entity] : _entities) {
             if (type == EntitiyType::PIPE || type == EntitiyType::FLOOR) {
                 if(entity->checkCollision(birdy)) {
-                    //play hit sound
+                    sound.setBuffer(hitSound);
+                    sound.play();
                     return 0;
                 }
             }
