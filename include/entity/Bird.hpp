@@ -21,6 +21,7 @@ class Bird : public AEntity {
 
     bool move();
     void draw(sf::RenderWindow& window, std::size_t currentFrame);
+    void reset();
 
     bool jump(std::size_t currentFrame);
 

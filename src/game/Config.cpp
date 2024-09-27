@@ -27,12 +27,17 @@ void Config::loadFromFile(const std::string& filename) {
     file >> configJson;
 
     _generalConfig.fps = configJson["generalConfig"]["fps"];
-
+    _musicConfig.volume = configJson["musicConfig"]["volume"];
+    _soundeffectConfig.volume = configJson["soundEffectConfig"]["volume"];
     for (auto& [key, value] : configJson["soundEffectConfig"].items()) {
-        _soundEffectConfig[key] = value[0];
+        if (!value.is_number()) {
+            _soundeffectConfig.soundEffects[key] = value[0];
+        }
     }
     for (auto& [key, value] : configJson["musicConfig"].items()) {
-        _musicConfig[key] = value[0];
+        if (!value.is_number()) {
+            _musicConfig.music[key] = value[0];
+        }
     }
     _birdConfig.velocity = configJson["birdConfig"]["velocity"];
     _birdConfig.jumpForce = configJson["birdConfig"]["jumpForce"];
@@ -58,9 +63,10 @@ const Config::FloorConfig& Config::getFloorConfig() const { return _floorConfig;
 
 const Config::BackgroundConfig& Config::getBackgroundConfig() const { return _backgroundConfig; }
 
-const std::map<std::string, std::string>& Config::getMusicConfig() const { return _musicConfig; }
-
-const std::map<std::string, std::string>& Config::getSoundEffectConfig() const { return _soundEffectConfig; }
 const Config::GeneralConfig& Config::getGeneralConfig() const { return _generalConfig; }
+
+const Config::SoundEffectConfig& Config::getSoundEffectConfig() const { return _soundeffectConfig; }
+
+const Config::MusicConfig& Config::getMusicConfig() const { return _musicConfig; }
 
 }  // namespace game

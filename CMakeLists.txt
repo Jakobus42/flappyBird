@@ -32,6 +32,7 @@ add_executable(flappyBird
     src/game/GameManager.cpp 
     src/game/Config.cpp 
     src/entity/Background.cpp
+    src/game/Menu.cpp 
 )
 
 # Link SFML to the target

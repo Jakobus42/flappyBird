@@ -9,6 +9,7 @@
 #include "../entity/Bird.hpp"
 #include "../entity/PipePair.hpp"
 #include "../game/Config.hpp"
+#include "../game/Menu.hpp"
 
 namespace game {
 
@@ -27,8 +28,7 @@ class GameManager {
     GameManager& operator=(const GameManager& other);
 
     void init(const std::string& configPath);
-    bool run();
-    void reset();
+    void run();
 
 
    private:
@@ -46,9 +46,20 @@ class GameManager {
     std::size_t _currentFrame;
     std::size_t _score;
 
+
+    sf::Music music; //TODO extract into SoundManager later
+    sf::SoundBuffer flapSound;
+    sf::Sound sound;
+    sf::Font font;
+
+    Menu _menu;
+
+    std::shared_ptr<entity::Bird> birdy;
+
     std::shared_ptr<entity::AEntity> findEntityByType(const std::vector<Entity>& entities, EntitiyType targetType);
 
-    void displayScore() const;
+    bool startGame();
+    void reset();
 };
 
 } /* namespace game */

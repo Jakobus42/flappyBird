@@ -30,6 +30,7 @@
         }
     },
     "soundEffectConfig": {
+        "volume": 10.0,
         "die": ["assets/audio/soundEffects/bird/normalBird/die.mp3"],
         "hit": ["assets/audio/soundEffects/bird/normalBird/hit.mp3"],
         "point": ["asdasd"],
@@ -37,7 +38,8 @@
 
     },
     "musicConfig": {
-        "default": ["assets/audio/soundTracks/lofi.mp3"],
+        "volume": 10.0,
+        "default": ["assets/audio/soundTracks/lofi-gute.mp3"],
         "chill": ["test"]
     }
 }

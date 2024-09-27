@@ -8,8 +8,11 @@ namespace game {
 GameManager::GameManager()
     : _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}),
      _currentFrame(0),
-     _score(0) {
+     _score(0),
+     _menu(Menu(SCREEN_WIDTH, SCREEN_HEIGHT)){
 }
+
+
 
 /**
  * @brief Destroys the GameManager object.
@@ -20,7 +23,10 @@ GameManager::~GameManager() {}
  * @brief Copy constructor.
  * @param other The other GameManager object to copy.
  */
-GameManager::GameManager(const GameManager&) {}
+GameManager::GameManager(const GameManager&):
+_menu(500, 500) {
+
+}
 
 /**
  * @brief Copy assignment operator.
@@ -44,7 +50,7 @@ void GameManager::init(const std::string& configPath) {
         _entities.push_back(Entity{EntitiyType::PIPE, std::make_shared<entity::PipePair> (i, pipeConfig.velocity, pipeConfig.spacing, pipeConfig.gap, pipeConfig.textures.at("default"))});
     }
     const auto& birdConfig = _config.getBirdConfig();
-    auto birdy = std::make_shared<entity::Bird>(
+    birdy = std::make_shared<entity::Bird>(
         _window.getSize().x / 3, 
         _window.getSize().y / 2, 
         birdConfig.textures.at("default"),
@@ -55,6 +61,15 @@ void GameManager::init(const std::string& configPath) {
     for (std::size_t i = 0; i < 2; ++i) {
         _entities.push_back(Entity{EntitiyType::FLOOR, std::make_shared<entity::Background>(i, floorConfig.velocity, floorConfig.textures.at("default"))});
     }
+    music.setVolume(_config.getMusicConfig().volume);
+    sound.setVolume(_config.getSoundEffectConfig().volume);
+    if (!music.openFromFile(_config.getMusicConfig().music.at("default")))
+        throw std::runtime_error("cant open " + _config.getMusicConfig().music.at("default"));
+    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().soundEffects.at("wing")))
+        throw std::runtime_error("cant open " + _config.getSoundEffectConfig().soundEffects.at("wing"));
+    if (!font.loadFromFile("font.ttf"))
+        return  throw std::runtime_error("cant load font.ttf ");
+    music.play();
 }
 
 std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector<Entity>& entities, EntitiyType targetType) {
@@ -66,21 +81,7 @@ std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector
     throw std::runtime_error("Cant find entity");
 }
 
-bool GameManager::run() {
-    sf::Music music; //TODO extract into SoundManager later
-    sf::SoundBuffer flapSound;
-    sf::Sound sound;
-    music.setVolume(1);
-    sound.setVolume(20);
-    if (!music.openFromFile(_config.getMusicConfig().at("default")))
-        throw std::runtime_error("cant open " + _config.getMusicConfig().at("default"));
-    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().at("wing")))
-        throw std::runtime_error("cant open " + _config.getMusicConfig().at("wing"));
-    sf::Font font;
-    if (!font.loadFromFile("font.ttf"))
-        return EXIT_FAILURE;
-    music.play();
-    auto birdy = findEntityByType(_entities, EntitiyType::BIRD);
+bool GameManager::startGame() {
     while (_window.isOpen()) {
         for (auto event = sf::Event{}; _window.pollEvent(event);) {
             if (((event.type == sf::Event::KeyPressed) &&
@@ -122,10 +123,51 @@ bool GameManager::run() {
 }
 
 
+void GameManager::run() { //TODO refactor
+    while (_window.isOpen()) {
+        sf::Event event;
+        while (_window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed || 
+               (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
+                _window.close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Up) {
+                    _menu.moveUp();
+                } else if (event.key.code == sf::Keyboard::Down) {
+                    _menu.moveDown();
+                } else if (event.key.code == sf::Keyboard::Space) {
+                    Menu::Option selected = _menu.getSelectedOption();
+                    switch (selected) {
+                        case Menu::Option::START:
+                            startGame();
+                            reset();
+                            break;
+                        case Menu::Option::OPTIONS:
+                            std::cout << "Options selected" << std::endl;
+                            break;
+                        case Menu::Option::EXIT:
+                            _window.close();
+                            break;
+                    }
+                }
+            }
+        }
+        _window.clear();
+        for (const auto& [type, entity] : _entities) {
+            if(type != EntitiyType::BIRD) {
+                entity->move();
+                entity->draw(_window, _currentFrame);
+            }
+        }
+        _menu.draw(_window);
+        _window.display();
+    }
+}
+
 void GameManager::reset() {
-    _entities.clear();
-    _window.clear();
-    _currentFrame = 0;
+    _score = 0;
+    birdy.reset();
 }
 
 } /* namespace game */

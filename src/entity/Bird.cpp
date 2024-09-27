@@ -59,4 +59,8 @@ void Bird::draw(sf::RenderWindow& window, std::size_t currentFrame) {
     window.draw(_sprite);
 }
 
+void Bird::reset() {
+
+}
+
 } /* namespace entity */

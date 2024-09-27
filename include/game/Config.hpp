@@ -12,6 +12,7 @@ class Config {
    struct GeneralConfig {
         uint32_t fps;
    };
+   
     struct BirdConfig {
         float velocity;
         float jumpForce;
@@ -37,6 +38,18 @@ class Config {
         std::map<std::string, std::vector<std::string>> textures;
     };
 
+    struct SoundEffectConfig {
+        std::map<std::string, std::string> soundEffects;
+
+        uint8_t volume;
+    };
+
+    struct MusicConfig {
+        std::map<std::string, std::string> music;
+
+        uint8_t volume;
+    };
+
     void loadFromFile(const std::string& filename);
 
     const BirdConfig& getBirdConfig() const;
@@ -44,18 +57,17 @@ class Config {
     const FloorConfig& getFloorConfig() const;
     const BackgroundConfig& getBackgroundConfig() const;
     const GeneralConfig& getGeneralConfig() const;
+    const SoundEffectConfig& getSoundEffectConfig() const;
+    const MusicConfig& getMusicConfig() const;
 
-
-    const std::map<std::string, std::string>& getMusicConfig() const;
-    const std::map<std::string, std::string>& getSoundEffectConfig() const;
    private:
     BirdConfig _birdConfig;
     PipeConfig _pipeConfig;
     FloorConfig _floorConfig;
     GeneralConfig _generalConfig;
     BackgroundConfig _backgroundConfig;
-    std::map<std::string, std::string> _soundEffectConfig;
-    std::map<std::string, std::string> _musicConfig;
+    SoundEffectConfig _soundeffectConfig;
+    MusicConfig _musicConfig;
 
     void loadTextureConfig(const nlohmann::json& json,
                            std::map<std::string, std::vector<std::string>>& textures);

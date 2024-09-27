@@ -5,6 +5,7 @@ now:
 - refactor gamemanager
 - entities in map
 - ScreenSize gloabl?
+- reset all entities when going in the menu
 
 later:
 - remove menu and write new one
