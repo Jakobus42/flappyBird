@@ -66,6 +66,7 @@ std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector
 
 bool GameManager::run() {
     sf::Music music; //TODO extract into SoundManager later
+    music.setVolume(1);
     if (!music.openFromFile(_config.getMusicConfig().at("default")))
         throw std::runtime_error("cant open " + _config.getMusicConfig().at("default"));
     music.play();
