@@ -1,6 +1,6 @@
 {
     "generalConfig": {
-        "fps": 42.0
+        "fps": 60.0
     },
     "birdConfig": {
         "velocity": 5.0,

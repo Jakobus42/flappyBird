@@ -57,6 +57,7 @@ class GameManager {
     std::shared_ptr<entity::Bird> birdy;
 
     std::shared_ptr<entity::AEntity> findEntityByType(const std::vector<Entity>& entities, EntitiyType targetType);
+    void loadEntitiesFromConfig();
 
     bool startGame();
     void reset();

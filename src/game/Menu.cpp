@@ -27,7 +27,7 @@ void Menu::setupMenu(float width, float height) {
         text.setCharacterSize(60);
         text.setFillColor(sf::Color::White);
         text.setPosition(sf::Vector2f(
-            width / 2.0f - text.getGlobalBounds().width / 2.0f,
+            width / 2.0f - text.getGlobalBounds().width / 2.0,
             startingHeight + i * verticalOffset)); 
         _menuItems.push_back(text);
     }

@@ -41,7 +41,19 @@ void GameManager::init(const std::string& configPath) {
     }
     _config.loadFromFile(configPath);
     _window.setFramerateLimit(_config.getGeneralConfig().fps);
-    const auto& backgroundConfig = _config.getBackgroundConfig();
+    loadEntitiesFromConfig();
+    music.setVolume(_config.getMusicConfig().volume);
+    sound.setVolume(_config.getSoundEffectConfig().volume);
+    if (!music.openFromFile(_config.getMusicConfig().music.at("default")))
+        throw std::runtime_error("cant open " + _config.getMusicConfig().music.at("default"));
+    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().soundEffects.at("wing")))
+        throw std::runtime_error("cant open " + _config.getSoundEffectConfig().soundEffects.at("wing"));
+    if (!font.loadFromFile("font.ttf"))
+        return  throw std::runtime_error("cant load font.ttf ");
+    music.play();
+}
+ void GameManager::loadEntitiesFromConfig() {
+ const auto& backgroundConfig = _config.getBackgroundConfig();
     for (std::size_t i = 0; i < 2; ++i) {
         _entities.push_back(Entity{EntitiyType::BACKGROUND, std::make_shared<entity::Background>(i, backgroundConfig.velocity, backgroundConfig.textures.at("default"))});
     }
@@ -61,15 +73,6 @@ void GameManager::init(const std::string& configPath) {
     for (std::size_t i = 0; i < 2; ++i) {
         _entities.push_back(Entity{EntitiyType::FLOOR, std::make_shared<entity::Background>(i, floorConfig.velocity, floorConfig.textures.at("default"))});
     }
-    music.setVolume(_config.getMusicConfig().volume);
-    sound.setVolume(_config.getSoundEffectConfig().volume);
-    if (!music.openFromFile(_config.getMusicConfig().music.at("default")))
-        throw std::runtime_error("cant open " + _config.getMusicConfig().music.at("default"));
-    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().soundEffects.at("wing")))
-        throw std::runtime_error("cant open " + _config.getSoundEffectConfig().soundEffects.at("wing"));
-    if (!font.loadFromFile("font.ttf"))
-        return  throw std::runtime_error("cant load font.ttf ");
-    music.play();
 }
 
 std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector<Entity>& entities, EntitiyType targetType) {
@@ -107,7 +110,7 @@ bool GameManager::startGame() {
             } else if(birdy->getPosition().y <= 0) {
                 return 0;
             }
-            if(type == EntitiyType::PIPE && entity->getPosition().x - birdy->getPosition().x <= 5.0f && entity->getPosition().x - birdy->getPosition().x >= 0.f) {
+            if(type == EntitiyType::PIPE && entity->getPosition().x - birdy->getPosition().x <= 5.0f && entity->getPosition().x - birdy->getPosition().x >= -5.0f) {
                 _score++;
             }
             entity->move();
@@ -167,7 +170,8 @@ void GameManager::run() { //TODO refactor
 
 void GameManager::reset() {
     _score = 0;
-    birdy.reset();
+    _entities.clear();
+    loadEntitiesFromConfig();
 }
 
 } /* namespace game */
