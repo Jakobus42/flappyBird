@@ -58,7 +58,7 @@ PipePair& PipePair::operator=(const PipePair& other) {
 int64_t PipePair::getRandomY() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(SCREEN_HEIGHT - SCREEN_HEIGHT / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
+    std::uniform_int_distribution<> dist(SCREEN_HEIGHT - SCREEN_HEIGHT / 1.6f, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
     return dist(gen);
 }
 
@@ -82,6 +82,7 @@ bool PipePair::move() {
     _lowerPipe.move(-_velocity, 0);
     _upperPipe.move(-_velocity, 0);
     if (_lowerPipe.getPosition().x < - _lowerPipe.getGlobalBounds().width) {
+         _randomY = getRandomY();
          _lowerPipe.setPosition(SCREEN_WIDTH + _spacing, _randomY);
          _upperPipe.setPosition(SCREEN_WIDTH + _spacing + _upperPipe.getGlobalBounds().width, getUpperPipeY());
     }
@@ -96,6 +97,10 @@ bool PipePair::move() {
 void PipePair::draw(sf::RenderWindow& window, std::size_t currentFrame) {
     window.draw(_lowerPipe);
     window.draw(_upperPipe);
+}
+
+const sf::Vector2f& PipePair::getPosition() const {
+    return _lowerPipe.getPosition();
 }
 
 }  // namespace entity

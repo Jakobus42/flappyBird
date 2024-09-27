@@ -6,7 +6,9 @@ namespace game {
  * @brief Constructs a new GameManager object.
  */
 GameManager::GameManager()
-    : _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}), _currentFrame(0) {
+    : _window(sf::RenderWindow{{SCREEN_WIDTH, SCREEN_HEIGHT}, "Flappy Bird"}),
+     _currentFrame(0),
+     _score(0) {
     _window.setFramerateLimit(60);
 }
 
@@ -67,15 +69,16 @@ std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector
 bool GameManager::run() {
     sf::Music music; //TODO extract into SoundManager later
     sf::SoundBuffer flapSound;
-    sf::SoundBuffer hitSound;
     sf::Sound sound;
     music.setVolume(1);
+    sound.setVolume(20);
     if (!music.openFromFile(_config.getMusicConfig().at("default")))
         throw std::runtime_error("cant open " + _config.getMusicConfig().at("default"));
-    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().at("flap")))
-        throw std::runtime_error("cant open " + _config.getMusicConfig().at("flap"));
-    if (!hitSound.loadFromFile(_config.getSoundEffectConfig().at("hit")))
-        throw std::runtime_error("cant open " + _config.getMusicConfig().at("hit"));
+    if (!flapSound.loadFromFile(_config.getSoundEffectConfig().at("wing")))
+        throw std::runtime_error("cant open " + _config.getMusicConfig().at("wing"));
+    sf::Font font;
+    if (!font.loadFromFile("font.ttf"))
+        return EXIT_FAILURE;
     music.play();
     auto birdy = findEntityByType(_entities, EntitiyType::BIRD);
     while (_window.isOpen()) {
@@ -98,14 +101,18 @@ bool GameManager::run() {
         for (const auto& [type, entity] : _entities) {
             if (type == EntitiyType::PIPE || type == EntitiyType::FLOOR) {
                 if(entity->checkCollision(birdy)) {
-                    sound.setBuffer(hitSound);
-                    sound.play();
                     return 0;
                 }
+            }
+            if(type == EntitiyType::PIPE && entity->getPosition().x - birdy->getPosition().x <= 5.0f && entity->getPosition().x - birdy->getPosition().x >= 0.f) {
+                _score++;
             }
             entity->move();
             entity->draw(_window, _currentFrame);
         }
+        sf::Text scoreAsText("Score: " + std::to_string(_score), font, 70);
+        scoreAsText.setPosition(20, 20);
+        _window.draw(scoreAsText);
         _window.display();
         _currentFrame++;
     }

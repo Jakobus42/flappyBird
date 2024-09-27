@@ -27,10 +27,10 @@
         }
     },
     "soundEffectConfig": {
-        "die": ["lol"],
-        "hit": ["asdads"],
+        "die": ["assets/audio/soundEffects/bird/normalBird/die.mp3"],
+        "hit": ["assets/audio/soundEffects/bird/normalBird/hit.mp3"],
         "point": ["asdasd"],
-        "wing": ["asdadsa"]
+        "wing": ["assets/audio/soundEffects/bird/normalBird/wing.mp3"]
 
     },
     "musicConfig": {

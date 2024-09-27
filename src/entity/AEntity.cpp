@@ -89,4 +89,8 @@ bool AEntity::checkCollision(std::shared_ptr<entity::AEntity> other) const {
     return _sprite.getGlobalBounds().intersects(other->_sprite.getGlobalBounds());
 }
 
+const sf::Vector2f& AEntity::getPosition() const {
+    return _sprite.getPosition();
+}
+
 } /* namespace entity */

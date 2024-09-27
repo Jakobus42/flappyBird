@@ -44,8 +44,11 @@ class GameManager {
     Config _config;
     std::vector<Entity> _entities;
     std::size_t _currentFrame;
+    std::size_t _score;
 
     std::shared_ptr<entity::AEntity> findEntityByType(const std::vector<Entity>& entities, EntitiyType targetType);
+
+    void displayScore() const;
 };
 
 } /* namespace game */

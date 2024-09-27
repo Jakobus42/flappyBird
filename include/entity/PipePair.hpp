@@ -19,6 +19,7 @@ class PipePair : public AEntity {
     bool move(); 
     void draw(sf::RenderWindow& window, std::size_t currentFrame);
     bool checkCollision(std::shared_ptr<entity::AEntity> other) const;
+    const sf::Vector2f& getPosition() const;
 
    private:
     int64_t getRandomY(); 
