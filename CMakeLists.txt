@@ -42,7 +42,7 @@ target_compile_features(flappyBird PRIVATE cxx_std_17)
 
 # Find and link nlohmann_json
 find_package(nlohmann_json 3.2.0 REQUIRED)
-target_link_libraries(flappyBird PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(flappyBird PRIVATE nlohmann_json::nlohmann_json sfml-audio)
 
 # Windows-specific custom command to copy OpenAL DLL
 if(WIN32)

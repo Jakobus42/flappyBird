@@ -25,5 +25,16 @@
         "textures": {
             "default": ["assets/textures/background/normalBackground/background-day-wide.png"]
         }
+    },
+    "soundEffectConfig": {
+        "die": ["lol"],
+        "hit": ["asdads"],
+        "point": ["asdasd"],
+        "wing": ["asdadsa"]
+
+    },
+    "musicConfig": {
+        "default": ["assets/audio/soundTracks/lofi.mp3"],
+        "chill": ["test"]
     }
 }

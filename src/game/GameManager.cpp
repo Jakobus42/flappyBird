@@ -65,6 +65,10 @@ std::shared_ptr<entity::AEntity> GameManager::findEntityByType(const std::vector
 }
 
 bool GameManager::run() {
+    sf::Music music; //TODO extract into SoundManager later
+    if (!music.openFromFile(_config.getMusicConfig().at("default")))
+        throw std::runtime_error("cant open " + _config.getMusicConfig().at("default"));
+    music.play();
     auto birdy = findEntityByType(_entities, EntitiyType::BIRD);
     while (_window.isOpen()) {
         for (auto event = sf::Event{}; _window.pollEvent(event);) {
@@ -77,6 +81,7 @@ bool GameManager::run() {
                 auto bird = std::dynamic_pointer_cast<entity::Bird>(birdy);
                 if (bird) {
                     bird->jump(_currentFrame);
+                    // play sound
                 }
             }
         }
@@ -84,6 +89,7 @@ bool GameManager::run() {
         for (const auto& [type, entity] : _entities) {
             if (type == EntitiyType::PIPE || type == EntitiyType::FLOOR) {
                 if(entity->checkCollision(birdy)) {
+                    //play hit sound
                     return 0;
                 }
             }

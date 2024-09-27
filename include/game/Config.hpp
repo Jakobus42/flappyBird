@@ -12,6 +12,8 @@ class Config {
     struct BirdConfig {
         float velocity;
         float jumpForce;
+
+
         std::map<std::string, std::vector<std::string>> textures;
     };
 
@@ -39,11 +41,16 @@ class Config {
     const FloorConfig& getFloorConfig() const;
     const BackgroundConfig& getBackgroundConfig() const;
 
+
+    const std::map<std::string, std::string>& getMusicConfig() const;
+    const std::map<std::string, std::string>& getSoundEffectConfig() const;
    private:
     BirdConfig _birdConfig;
     PipeConfig _pipeConfig;
     FloorConfig _floorConfig;
     BackgroundConfig _backgroundConfig;
+    std::map<std::string, std::string> _soundEffectConfig;
+    std::map<std::string, std::string> _musicConfig;
 
     void loadTextureConfig(const nlohmann::json& json,
                            std::map<std::string, std::vector<std::string>>& textures);

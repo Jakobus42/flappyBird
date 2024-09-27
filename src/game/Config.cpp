@@ -1,4 +1,5 @@
 #include "../../include/game/Config.hpp"
+#include <iostream>
 
 #include <fstream>
 
@@ -25,6 +26,13 @@ void Config::loadFromFile(const std::string& filename) {
     json configJson;
     file >> configJson;
 
+
+    for (auto& [key, value] : configJson["soundEffectConfig"].items()) {
+        _soundEffectConfig[key] = value[0];
+    }
+    for (auto& [key, value] : configJson["musicConfig"].items()) {
+        _musicConfig[key] = value[0];
+    }
     _birdConfig.velocity = configJson["birdConfig"]["velocity"];
     _birdConfig.jumpForce = configJson["birdConfig"]["jumpForce"];
     loadTextureConfig(configJson["birdConfig"]["textures"], _birdConfig.textures);
@@ -48,5 +56,9 @@ const Config::PipeConfig& Config::getPipeConfig() const { return _pipeConfig; }
 const Config::FloorConfig& Config::getFloorConfig() const { return _floorConfig; }
 
 const Config::BackgroundConfig& Config::getBackgroundConfig() const { return _backgroundConfig; }
+
+const std::map<std::string, std::string>& Config::getMusicConfig() const { return _musicConfig; }
+
+const std::map<std::string, std::string>& Config::getSoundEffectConfig() const { return _soundEffectConfig; }
 
 }  // namespace game
