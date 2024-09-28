@@ -9,7 +9,7 @@ Menu::Menu(float width, float height) {
 
     setupMenu(width, height);
     _option = Option::START;
-    _menuItems[static_cast<std::size_t>(_option)].setFillColor(sf::Color::Red);
+    _menuItems[static_cast<std::size_t>(_option)].setFillColor(sf::Color::Blue);
     _menuItems[static_cast<std::size_t>(_option)].setStyle(sf::Text::Bold);
 }
 
