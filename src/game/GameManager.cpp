@@ -52,6 +52,7 @@ void GameManager::init(const std::string& configPath) {
         return  throw std::runtime_error("cant load font.ttf ");
     music.play();
 }
+
  void GameManager::loadEntitiesFromConfig() {
  const auto& backgroundConfig = _config.getBackgroundConfig();
     for (std::size_t i = 0; i < 2; ++i) {
@@ -158,7 +159,7 @@ void GameManager::run() { //TODO refactor
         }
         _window.clear();
         for (const auto& [type, entity] : _entities) {
-            if(type != EntitiyType::BIRD) {
+            if(type != EntitiyType::BIRD && type != EntitiyType::PIPE) {
                 entity->move();
                 entity->draw(_window, _currentFrame);
             }
